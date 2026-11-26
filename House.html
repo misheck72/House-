@@ -1,0 +1,2624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nyumba — Zambia's Property Marketplace</title>
+<meta name="description" content="Find houses, apartments, land, farms and commercial property for sale and to let across Zambia. Prices in ZMW and USD.">
+<meta name="theme-color" content="#0b6b4f">
+<style>
+/* ============================================================
+   BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --green:#0b6b4f;
+  --green-600:#0e7d5c;
+  --green-50:#e8f3ee;
+  --green-100:#d3e9df;
+  --copper:#c8763c;
+  --amber:#f2a03d;
+  --ink:#0e1a14;
+  --muted:#6a7a72;
+  --line:#e3e8e5;
+  --bg:#f7f8f6;
+  --card:#fff;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(14,26,20,.05), 0 8px 24px rgba(14,26,20,.06);
+  --maxw:1140px;
+  --safe: env(safe-area-inset-bottom, 0px);
+}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg); color:var(--ink); font-size:15px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,h4,p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 14px}
+#app{padding-bottom:calc(88px + var(--safe))}
+@media(min-width:860px){#app{padding-bottom:40px}}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.hdr{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hdr-in{max-width:var(--maxw);margin:0 auto;padding:9px 14px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px;letter-spacing:-.02em;flex-shrink:0}
+.logo-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#0b6b4f,#16a172);display:grid;place-items:center;color:#fff;font-size:14px;font-weight:900;box-shadow:0 2px 8px rgba(11,107,79,.28)}
+.logo small{display:block;font-size:9.5px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.nav{display:none;gap:2px;margin-left:10px}
+.nav a{padding:8px 11px;border-radius:9px;font-size:13.5px;font-weight:600;color:#3d4c45}
+.nav a:hover{background:var(--green-50);color:var(--green)}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+@media(min-width:860px){.nav{display:flex}}
+
+.cur-toggle{display:flex;background:#eef1ef;border-radius:999px;padding:3px;font-size:12px;font-weight:700}
+.cur-toggle button{padding:5px 9px;border-radius:999px;color:var(--muted);transition:.15s}
+.cur-toggle button.on{background:#fff;color:var(--green);box-shadow:0 1px 3px rgba(0,0,0,.13)}
+
+/* ============================================================
+   BUTTONS / CHIPS
+   ============================================================ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 16px;border-radius:11px;font-weight:700;font-size:14px;transition:.15s;white-space:nowrap}
+.btn-primary{background:var(--green);color:#fff;box-shadow:0 2px 10px rgba(11,107,79,.25)}
+.btn-primary:hover{background:var(--green-600)}
+.btn-outline{border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.btn-outline:hover{border-color:var(--green-100);background:var(--green-50)}
+.btn-ghost{background:var(--green-50);color:var(--green)}
+.btn-sm{padding:8px 13px;font-size:13px;border-radius:9px}
+.btn-block{width:100%}
+.btn-wa{background:#25D366;color:#fff}
+.btn-call{background:#0b6b4f;color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.icon-btn{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;border:1.5px solid var(--line);background:#fff}
+.icon-btn svg{width:18px;height:18px}
+
+.chip{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:#3d4c45;white-space:nowrap;transition:.14s}
+.chip:hover{border-color:var(--green-100)}
+.chip.on{background:var(--green);border-color:var(--green);color:#fff}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{background:linear-gradient(160deg,#0b6b4f 0%,#0e8a63 55%,#14a173 100%);color:#fff;padding:26px 0 32px;border-radius:0 0 24px 24px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(700px 240px at 88% -20%,rgba(255,255,255,.2),transparent 70%);pointer-events:none}
+.hero h1{font-size:25px;line-height:1.16;letter-spacing:-.03em;font-weight:800;margin-bottom:7px}
+.hero p{font-size:13.5px;opacity:.9;margin-bottom:16px;max-width:440px}
+@media(min-width:700px){.hero h1{font-size:34px}.hero{padding:44px 0 46px}}
+
+.seg{display:flex;background:rgba(255,255,255,.16);border-radius:11px;padding:3px;gap:2px;margin-bottom:10px}
+.seg button{flex:1;padding:8px 6px;border-radius:9px;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.82);transition:.14s}
+.seg button.on{background:#fff;color:var(--green);box-shadow:0 1px 4px rgba(0,0,0,.16)}
+.seg.dark{background:#eef1ef;margin-bottom:0}
+.seg.dark button{color:var(--muted)}
+.seg.dark button.on{background:#fff;color:var(--green);box-shadow:0 1px 3px rgba(0,0,0,.13)}
+
+.searchbox{background:#fff;border-radius:14px;padding:8px;box-shadow:0 8px 30px rgba(0,0,0,.16);display:flex;flex-direction:column;gap:8px}
+.searchbox .row{display:flex;gap:8px}
+.searchbox input{flex:1;min-width:0;border:0;background:#f3f5f4;border-radius:10px;padding:12px 13px;font-size:14px;outline:none}
+.searchbox input:focus{background:#fff;box-shadow:0 0 0 2px var(--green-100)}
+.searchbox .btn{flex-shrink:0}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.section{padding:22px 0}
+.section-hd{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:13px}
+.section-hd h2{font-size:17.5px;font-weight:800;letter-spacing:-.02em}
+.section-hd p{font-size:12.5px;color:var(--muted);margin-top:2px}
+.section-hd a{font-size:13px;font-weight:700;color:var(--green);flex-shrink:0}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.grid{display:grid;gap:13px;grid-template-columns:1fr}
+@media(min-width:540px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:880px){.grid{grid-template-columns:repeat(3,1fr);gap:16px}}
+.grid.two{grid-template-columns:1fr}
+@media(min-width:540px){.grid.two{grid-template-columns:repeat(2,1fr)}}
+
+.card{background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);display:block;transition:transform .15s, box-shadow .15s;position:relative}
+.card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.card:active{transform:scale(.992)}
+.card-media{position:relative;aspect-ratio:4/3;background:#e7ece9;overflow:hidden}
+.card-media img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.card:hover .card-media img{transform:scale(1.04)}
+.card-badges{position:absolute;top:8px;left:8px;display:flex;gap:5px;flex-wrap:wrap;max-width:75%}
+.badge{font-size:10px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;padding:4px 7px;border-radius:6px;color:#fff;backdrop-filter:blur(4px)}
+.badge.feat{background:linear-gradient(135deg,#f2a03d,#e0851f)}
+.badge.exc{background:linear-gradient(135deg,#1c1c1c,#3d3d3d)}
+.badge.ver{background:linear-gradient(135deg,#0b6b4f,#14a173)}
+.badge.new{background:linear-gradient(135deg,#2563eb,#3b82f6)}
+.fav-btn{position:absolute;top:8px;right:8px;width:33px;height:33px;border-radius:50%;background:rgba(255,255,255,.94);display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.16);transition:.15s}
+.fav-btn svg{width:17px;height:17px;stroke:#3d4c45;fill:none;stroke-width:2}
+.fav-btn.on svg{fill:#e0245e;stroke:#e0245e}
+.fav-btn.on{transform:scale(1.06)}
+.card-body{padding:10px 12px 12px}
+.card-price{font-size:16.5px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.card-price span{font-size:11.5px;font-weight:600;color:var(--muted)}
+.card-title{font-size:13.5px;font-weight:600;margin-top:3px;line-height:1.32;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:#1c2a23}
+.card-meta{font-size:12px;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.card-meta b{color:#3d4c45;font-weight:700}
+.card-loc{font-size:12px;color:var(--muted);margin-top:5px;display:flex;align-items:center;gap:4px}
+.card-loc svg{width:12px;height:12px;flex-shrink:0;stroke:var(--muted)}
+
+/* ============================================================
+   QUICK LINKS / TILES
+   ============================================================ */
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:640px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 12px;display:flex;flex-direction:column;gap:5px;transition:.15s}
+.tile:hover{border-color:var(--green-100);background:var(--green-50)}
+.tile svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:1.7}
+.tile b{font-size:13px;font-weight:700}
+.tile small{font-size:11.5px;color:var(--muted)}
+
+.area-card{position:relative;border-radius:13px;overflow:hidden;aspect-ratio:16/10;background:#dfe7e2}
+.area-card img{width:100%;height:100%;object-fit:cover}
+.area-card .ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75),rgba(0,0,0,.05) 55%)}
+.area-card .txt{position:absolute;left:12px;right:12px;bottom:11px;color:#fff}
+.area-card .txt b{font-size:14.5px;font-weight:800;display:block}
+.area-card .txt small{font-size:11.5px;opacity:.88}
+
+/* ============================================================
+   BANNERS
+   ============================================================ */
+.warn{background:#fff8ec;border:1px solid #f5dfb8;border-radius:12px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:#7a5316;line-height:1.4}
+.warn svg{width:18px;height:18px;flex-shrink:0;stroke:#c8763c;fill:none;stroke-width:1.9;margin-top:1px}
+.warn b{display:block;color:#5c3d0e;margin-bottom:1px}
+
+/* ============================================================
+   SEARCH PAGE
+   ============================================================ */
+.search-head{background:#fff;border-bottom:1px solid var(--line);padding:11px 0 10px;position:sticky;top:53px;z-index:40}
+.searchbar{position:relative}
+.searchbar input{width:100%;border:1.5px solid var(--line);background:#f7f8f6;border-radius:11px;padding:11px 13px 11px 38px;font-size:14px;outline:none;transition:.15s}
+.searchbar input:focus{background:#fff;border-color:var(--green);box-shadow:0 0 0 3px var(--green-50)}
+.searchbar svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:17px;height:17px;stroke:var(--muted);fill:none;stroke-width:2}
+.toolbar{display:flex;align-items:center;gap:8px;margin-top:9px}
+.toolbar .spacer{flex:1}
+.toolbar select{border:1.5px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px;font-size:12.5px;font-weight:600;outline:none;max-width:150px}
+.filter-count{background:var(--green);color:#fff;border-radius:999px;font-size:10.5px;padding:1px 6px;margin-left:5px;font-weight:800}
+.result-count{font-size:12.5px;color:var(--muted);padding:13px 0 9px}
+.result-count b{color:var(--ink)}
+
+/* ============================================================
+   SHEET (filters)
+   ============================================================ */
+.sheet{position:fixed;inset:0;z-index:90;display:none}
+.sheet.open{display:block}
+.sheet-bg{position:absolute;inset:0;background:rgba(14,26,20,.45);backdrop-filter:blur(2px)}
+.sheet-panel{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;max-height:88vh;display:flex;flex-direction:column;animation:slideUp .22s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@media(min-width:700px){
+  .sheet-panel{left:50%;transform:translateX(-50%);bottom:auto;top:50%;margin-top:-330px;width:600px;border-radius:18px;max-height:78vh}
+  @keyframes slideUp{from{opacity:0}to{opacity:1}}
+}
+.sheet-hd{padding:15px 16px 11px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.sheet-hd h3{font-size:16px;font-weight:800;flex:1}
+.sheet-body{padding:15px 16px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+.sheet-ft{padding:12px 16px calc(12px + var(--safe));border-top:1px solid var(--line);display:flex;gap:9px;flex-shrink:0}
+.fgroup{margin-bottom:19px}
+.fgroup>label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:9px}
+.frow{display:flex;gap:9px}
+.frow>*{flex:1;min-width:0}
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+.field{margin-bottom:15px}
+.field label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px;color:#3d4c45}
+.field .hint{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.4}
+.input,.select,.textarea{width:100%;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:11px 12px;font-size:14px;outline:none;transition:.15s;-webkit-appearance:none;appearance:none}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-50)}
+.textarea{resize:vertical;min-height:92px;line-height:1.5}
+.select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236a7a72' stroke-width='2.4' stroke-linecap='round'><path d='m6 9 6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+.input-group{display:flex}
+.input-group .input{border-radius:10px 0 0 10px}
+.input-group .select{width:88px;flex-shrink:0;border-radius:0 10px 10px 0;border-left:0}
+.err{color:#c0392b;font-size:12px;margin-top:6px;font-weight:600}
+
+/* ============================================================
+   LISTING DETAIL
+   ============================================================ */
+.gallery{position:relative;background:#0e1a14}
+.g-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.g-track::-webkit-scrollbar{display:none}
+.g-slide{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:4/3;background:#dfe7e2}
+.g-slide img{width:100%;height:100%;object-fit:cover}
+@media(min-width:800px){.g-slide{aspect-ratio:16/9}}
+.g-count{position:absolute;right:12px;bottom:12px;background:rgba(0,0,0,.62);color:#fff;font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:999px;backdrop-filter:blur(4px)}
+.g-back{position:absolute;left:10px;top:10px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.94);display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.g-back svg{width:18px;height:18px;stroke:#0e1a14;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+.detail-head{background:#fff;padding:15px 14px;border-bottom:1px solid var(--line)}
+.detail-price{font-size:25px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.detail-price-alt{font-size:13px;color:var(--muted);font-weight:600;margin-top:3px}
+.detail-title{font-size:16px;font-weight:700;margin-top:9px;line-height:1.3;letter-spacing:-.01em}
+.detail-loc{font-size:13px;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:5px}
+.detail-loc svg{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:1.9}
+.detail-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+@media(min-width:540px){.kv{grid-template-columns:repeat(4,1fr)}}
+.kv-cell{background:#fff;padding:12px 12px}
+.kv-cell span{display:block;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.kv-cell b{display:block;font-size:14.5px;font-weight:800;margin-top:3px;letter-spacing:-.01em}
+
+.panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px 14px;margin-bottom:13px}
+.panel h3{font-size:14.5px;font-weight:800;margin-bottom:11px;letter-spacing:-.01em}
+.panel p{font-size:13.5px;color:#3d4c45;line-height:1.6;white-space:pre-line}
+.amenities{display:flex;flex-wrap:wrap;gap:7px}
+.amenity{font-size:12.5px;font-weight:600;background:var(--green-50);color:#0a5a43;padding:6px 11px;border-radius:8px;display:flex;align-items:center;gap:5px}
+.amenity svg{width:13px;height:13px;stroke:var(--green);fill:none;stroke-width:2.6}
+
+.spec-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f0f3f1;font-size:13.5px}
+.spec-row:last-child{border-bottom:0}
+.spec-row span{color:var(--muted)}
+.spec-row b{font-weight:700}
+
+.map-box{position:relative;border-radius:12px;overflow:hidden;height:190px;background:linear-gradient(135deg,#e8efe9,#d6e4db);border:1px solid var(--line)}
+.map-box .pin-big{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);width:34px;height:34px;background:var(--green);border-radius:50% 50% 50% 0;rotate:-45deg;display:grid;place-items:center;box-shadow:0 4px 12px rgba(11,107,79,.4)}
+.map-box .pin-big::after{content:"";width:11px;height:11px;background:#fff;border-radius:50%}
+.map-box .map-label{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(255,255,255,.95) 40%);padding:22px 12px 10px;font-size:12px;color:var(--muted)}
+
+.agent-card{display:flex;gap:12px;align-items:flex-start}
+.avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#0b6b4f,#16a172);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;flex-shrink:0}
+.agent-card .info{flex:1;min-width:0}
+.agent-card .name{font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.agent-card .agency{font-size:12.5px;color:var(--muted);margin-top:1px}
+.verified-tick{display:inline-flex;align-items:center;gap:3px;background:var(--green-50);color:var(--green);font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:999px;text-transform:uppercase;letter-spacing:.03em}
+.verified-tick svg{width:11px;height:11px;stroke:var(--green);fill:none;stroke-width:3}
+.license{font-size:11.5px;color:var(--muted);margin-top:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+.contact-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.contact-bar .btn{padding:12px 10px;font-size:13.5px}
+.contact-bar .full{grid-column:1/-1}
+
+.share-row{display:flex;gap:8px;margin-top:12px}
+.share-row .btn{flex:1;font-size:12.5px;padding:10px 8px}
+.share-row .btn svg{width:16px;height:16px}
+
+/* ============================================================
+   POST FLOW
+   ============================================================ */
+.stepper{background:#fff;border-bottom:1px solid var(--line);padding:12px 0 13px;position:sticky;top:53px;z-index:40}
+.steps{display:flex;gap:5px}
+.step-dot{flex:1;height:4px;border-radius:2px;background:#e3e8e5;transition:.25s}
+.step-dot.done{background:var(--green)}
+.step-dot.current{background:var(--green);box-shadow:0 0 0 3px var(--green-50)}
+.step-label{font-size:12px;font-weight:700;color:var(--muted);margin-top:9px;display:flex;justify-content:space-between}
+.step-label b{color:var(--green)}
+
+.type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:560px){.type-grid{grid-template-columns:repeat(3,1fr)}}
+.type-opt{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:15px 12px;text-align:left;transition:.14s;display:flex;flex-direction:column;gap:7px}
+.type-opt svg{width:24px;height:24px;stroke:#3d4c45;fill:none;stroke-width:1.6}
+.type-opt b{font-size:13.5px;font-weight:700}
+.type-opt.on{border-color:var(--green);background:var(--green-50)}
+.type-opt.on svg{stroke:var(--green)}
+
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(min-width:540px){.photo-grid{grid-template-columns:repeat(4,1fr)}}
+.photo-slot{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:#eef1ef;border:1.5px dashed var(--line);display:grid;place-items:center;cursor:pointer}
+.photo-slot img{width:100%;height:100%;object-fit:cover}
+.photo-slot .rm{position:absolute;top:3px;right:3px;width:21px;height:21px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;display:grid;place-items:center;font-size:13px;line-height:1;font-weight:700}
+.photo-slot .cover-tag{position:absolute;bottom:0;left:0;right:0;background:rgba(11,107,79,.9);color:#fff;font-size:9px;font-weight:800;text-align:center;padding:2px;letter-spacing:.05em}
+.photo-slot.dragging{opacity:.4}
+.photo-add{border:1.5px dashed var(--green-100);background:var(--green-50);border-radius:10px;aspect-ratio:1;display:grid;place-items:center;text-align:center;color:var(--green);font-size:11.5px;font-weight:700;padding:6px}
+
+/* ============================================================
+   TABBAR
+   ============================================================ */
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;padding-bottom:var(--safe)}
+.tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 7px;font-size:10px;font-weight:700;color:var(--muted);transition:.14s}
+.tabbar a.on{color:var(--green)}
+.tabbar svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.85;stroke-linecap:round;stroke-linejoin:round}
+@media(min-width:860px){.tabbar{display:none}}
+
+/* ============================================================
+   MODAL / TOAST
+   ============================================================ */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(14,26,20,.55);display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);animation:fadeIn .16s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@media(min-width:640px){.overlay{align-items:center}}
+.modal{background:#fff;width:100%;max-width:460px;border-radius:20px 20px 0 0;padding:20px 18px calc(20px + var(--safe));max-height:92vh;overflow-y:auto;animation:slideUp .2s ease}
+@media(min-width:640px){.modal{border-radius:18px;padding-bottom:20px;animation:fadeIn .18s}}
+.modal h3{font-size:17px;font-weight:800;margin-bottom:5px;letter-spacing:-.02em}
+.modal .sub{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.45}
+
+#toast{position:fixed;left:50%;bottom:calc(96px + var(--safe));transform:translate(-50%,20px);background:#0e1a14;color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:999px;z-index:200;opacity:0;pointer-events:none;transition:.24s;box-shadow:0 6px 24px rgba(0,0,0,.28);max-width:88vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty svg{width:44px;height:44px;stroke:#c3d0c8;fill:none;stroke-width:1.5;margin:0 auto 12px}
+.empty b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px}
+.empty p{font-size:13px;max-width:280px;margin:0 auto}
+.skeleton{background:linear-gradient(90deg,#eef1ef 25%,#e3e8e5 50%,#eef1ef 75%);background-size:200% 100%;animation:shimmer 1.3s infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+.divider{height:1px;background:var(--line);margin:14px 0}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stat{background:var(--green-50);border-radius:10px;padding:11px 9px;text-align:center}
+.stat b{display:block;font-size:17px;font-weight:800;color:var(--green);letter-spacing:-.02em}
+.stat span{font-size:10.5px;color:#4a6b5c;font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+
+.map-canvas{position:relative;height:calc(100vh - 210px);min-height:380px;border-radius:14px;overflow:hidden;background:linear-gradient(150deg,#eaf1ec,#d9e6dd);border:1px solid var(--line)}
+.map-canvas .zambia{position:absolute;inset:0;opacity:.5}
+.pin{position:absolute;transform:translate(-50%,-100%);background:var(--green);color:#fff;font-size:11px;font-weight:800;padding:5px 9px;border-radius:999px;box-shadow:0 3px 10px rgba(11,107,79,.4);white-space:nowrap;transition:.15s}
+.pin:hover{background:#0e8a63;transform:translate(-50%,-100%) scale(1.08);z-index:5}
+.pin.feat{background:var(--copper)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a href="#/" class="logo">
+      <span class="logo-mark">N</span>
+      <span>Nyumba<small>Zambia</small></span>
+    </a>
+    <nav class="nav">
+      <a href="#/search?purpose=sale">Buy</a>
+      <a href="#/search?purpose=rent">Rent</a>
+      <a href="#/search?purpose=short">Short stay</a>
+      <a href="#/search?purpose=sale&type=land">Land</a>
+      <a href="#/advice">Advice</a>
+      <a href="#/agents">Agents</a>
+    </nav>
+    <div class="hdr-right">
+      <div class="cur-toggle" id="curToggle">
+        <button data-act="cur" data-val="ZMW" class="on">ZMW</button>
+        <button data-act="cur" data-val="USD">USD</button>
+      </div>
+      <a href="#/post" class="btn btn-primary btn-sm" style="display:none" id="hdrPost">+ Post</a>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<nav class="tabbar" id="tabbar">
+  <a href="#/" data-tab="/">
+    <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/></svg>
+    Home
+  </a>
+  <a href="#/search" data-tab="/search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4-4"/></svg>
+    Search
+  </a>
+  <a href="#/saved" data-tab="/saved">
+    <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-9.3A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.7C19 15.6 12 20 12 20Z"/></svg>
+    Saved
+  </a>
+  <a href="#/post" data-tab="/post">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+    Post
+  </a>
+  <a href="#/account" data-tab="/account">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.5 20c.9-3.7 3.9-5.6 7.5-5.6s6.6 1.9 7.5 5.6"/></svg>
+    Account
+  </a>
+</nav>
+
+<div id="modal-root"></div>
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   0. UTILITIES
+   ============================================================ */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const RATE = 27.5; // ZMW per USD (indicative)
+
+const toZMW  = (a, cur) => cur === 'USD' ? a * RATE : a;
+const fromZMW = (z, cur) => cur === 'USD' ? z / RATE : z;
+
+function fmtMoney(v, cur) {
+  const sym = cur === 'ZMW' ? 'K' : '$';
+  if (v >= 1e6) {
+    const m = v / 1e6;
+    return sym + (m >= 10 ? m.toFixed(1) : m.toFixed(2)).replace(/\.?0+$/, '') + 'M';
+  }
+  return sym + Math.round(v).toLocaleString('en-US');
+}
+function fmtExact(v, cur) {
+  const sym = cur === 'ZMW' ? 'K' : 'US$';
+  return sym + Math.round(v).toLocaleString('en-US');
+}
+function priceSuffix(l) {
+  return l.purpose === 'rent' ? ' /month' : l.purpose === 'short' ? ' /night' : '';
+}
+function priceText(l, cur) {
+  return fmtMoney(fromZMW(toZMW(l.price, l.currency), cur), cur) + priceSuffix(l);
+}
+function priceExact(l, cur) {
+  return fmtExact(fromZMW(toZMW(l.price, l.currency), cur), cur);
+}
+function altPrice(l, cur) {
+  const other = cur === 'ZMW' ? 'USD' : 'ZMW';
+  return '≈ ' + fmtExact(fromZMW(toZMW(l.price, l.currency), other), other) + priceSuffix(l);
+}
+function timeAgo(days) {
+  if (days === 0) return 'Today';
+  if (days === 1) return 'Yesterday';
+  if (days < 7) return days + ' days ago';
+  if (days < 30) return Math.floor(days / 7) + ' week' + (days < 14 ? '' : 's') + ' ago';
+  return Math.floor(days / 30) + ' month' + (days < 60 ? '' : 's') + ' ago';
+}
+function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+
+/* Image helper — compressed, responsive widths */
+const imgUrl = (id, w = 640) =>
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=55`;
+
+const FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dbe7e0"/><stop offset="1" stop-color="#c3d6cb"/></linearGradient></defs><rect width="800" height="600" fill="url(#g)"/><g fill="none" stroke="#7fa392" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M290 330l110-90 110 90"/><path d="M320 320v120h160V320"/><path d="M380 440v-60h40v60"/></g></svg>`
+);
+
+/* ============================================================
+   1. SAMPLE DATA — Zambian listings
+   ============================================================ */
+const PH = {
+  h1:'1568605114967-8130f3a36994', h2:'1570129477492-45c003edd2be',
+  h3:'1600596542815-ffad4c1539a9', h4:'1600585154340-be6161a56a0c',
+  h5:'1600607687939-ce8a6c25118c', h6:'1600566753086-00f18fb6b3ea',
+  h7:'1512917774080-9991f1c4c750', h8:'1580587771525-78b9dba3b914',
+  h9:'1613490493576-7fde63acd811', h10:'1449844908441-8829872d2607',
+  i1:'1502005229762-cf1b2da7c5d6', i2:'1522708323590-d24dbb6b0267',
+  ap:'1560448204-e02f11c3d0e2', land:'1464082354059-27db6ce50048',
+  field:'1500382017468-9049fed747ef', com:'1486406146926-c627a92ad1ab',
+  off:'1497366216548-37526070297c', ind:'1545324418-cc1a3fa10c00'
+};
+
+const AGENTS = {
+  a1:{ id:'a1', name:'Mwila Banda', agency:'Kabulonga Realty', phone:'+260 971 234 567', wa:'260971234567',
+       verified:true, license:'ZIEA/2019/0421', rating:4.8, since:2019,
+       bio:'Licensed real estate agent covering Lusaka\'s leafy east. I specialise in residential sales in Kabulonga, Roma, Woodlands and Ibex Hill, and I work with diaspora buyers remotely via video viewings.',
+       areas:['Kabulonga','Roma','Woodlands','Ibex Hill','Chalala'] },
+  a2:{ id:'a2', name:'Chanda Mulenga', agency:'Copperbelt Property Hub', phone:'+260 966 118 220', wa:'260966118220',
+       verified:true, license:'ZIEA/2021/1188', rating:4.6, since:2021,
+       bio:'Based in Kitwe, serving the entire Copperbelt — Kitwe, Ndola, Chingola and Mufulira. Residential lettings and industrial space for mining-supply businesses.',
+       areas:['Kitwe','Ndola','Chingola','Mufulira'] },
+  a3:{ id:'a3', name:'Thandiwe Phiri', agency:'Livingstone Homes & Safaris', phone:'+260 977 340 881', wa:'260977340881',
+       verified:true, license:'ZIEA/2020/0733', rating:4.9, since:2020,
+       bio:'Southern Province specialist. Holiday lets, retirement homes and land around Victoria Falls and the Kazungula corridor.',
+       areas:['Livingstone','Kazungula','Kalomo','Choma'] },
+  a4:{ id:'a4', name:'Joseph Mwansa', agency:'Meanwood Developments', phone:'+260 955 004 412', wa:'260955004412',
+       verified:true, license:'EARB/2018/0092', rating:4.7, since:2018,
+       bio:'Developer of gated estates in Lusaka. Selling off-plan and completed units across Meanwood, Silverest and Ibex Hill.',
+       areas:['Meanwood','Ibex Hill','Silverest','Kabulonga'] },
+  a5:{ id:'a5', name:'Grace Tembo', agency:'Private owner', phone:'+260 962 887 301', wa:'260962887301',
+       verified:false, license:'', rating:null, since:2024,
+       bio:'Private seller — listing my own properties.',
+       areas:['Lusaka'] }
+};
+
+const now = Date.now();
+const day = 86400000;
+
+const LISTINGS = [
+{
+  id:'l1', ref:'LUS-KAB-1042', type:'house', purpose:'sale',
+  title:'4 Bedroom House with Pool in Kabulonga',
+  desc:`A beautifully maintained family home on a quiet street in Kabulonga. The property sits on a 1,800 m² plot with mature gardens, a swimming pool and a self-contained two-bedroom cottage — ideal for extended family or extra rental income.
+
+The main house offers an open-plan lounge and dining area opening onto a covered patio, a fitted kitchen with scullery, four bedrooms (three en-suite), and a study. There is a double carport, staff quarters, and a 5 kVA solar system with inverter backup that keeps the lights on during load-shedding.
+
+Title deed is available and the property is in a gated, walled compound with electric fencing. Viewing by appointment only.`,
+  price:4500000, currency:'ZMW', beds:4, baths:3, plot:1800, plotUnit:'m²', floor:320,
+  province:'Lusaka', city:'Lusaka', suburb:'Kabulonga',
+  power:['ZESCO','Solar'], water:['Council','Borehole'], gated:true, titleType:'Title Deed',
+  amenities:['Swimming pool','Garden','Air conditioning','Cottage','Borehole','Walled','Electric fence','Staff quarters','Carport'],
+  photos:[PH.h1,PH.h4,PH.h5,PH.i1,PH.i2],
+  video:'https://www.youtube.com/watch?v=example',
+  lat:-15.4235, lng:28.3168,
+  nearby:['Kabulonga Primary School','Manda Hill Mall','UTH Teaching Hospital','Lusaka Golf Club'],
+  badges:['Exclusive'], agent:'a1', daysAgo:2, views:1284, enquiries:23, featured:true
+},
+{
+  id:'l2', ref:'LUS-MND-2210', type:'townhouse', purpose:'sale',
+  title:'3 Bedroom Townhouse in Meanwood Ndeke',
+  desc:`Modern three-bedroom townhouse in a secure gated estate in Meanwood Ndeke. Built in 2023, the unit offers an open-plan living area, fitted kitchen, two bathrooms plus a guest toilet, and a private garden.
+
+The estate has 24-hour security, a shared borehole and a paved road network. ZESCO prepaid meter installed and a communal solar back-up system for the street lights.
+
+Perfect for a young family or a diaspora buyer looking for a lock-up-and-go property.`,
+  price:1850000, currency:'ZMW', beds:3, baths:2, plot:220, plotUnit:'m²', floor:145,
+  province:'Lusaka', city:'Lusaka', suburb:'Meanwood Ndeke',
+  power:['ZESCO','Solar'], water:['Borehole','Council'], gated:true, titleType:'Title Deed',
+  amenities:['Garden','Walled','Electric fence','24hr security','Air conditioning','Paved parking'],
+  photos:[PH.h3,PH.h6,PH.i1,PH.h8],
+  video:'',
+  lat:-15.3521, lng:28.3812,
+  nearby:['Meanwood Shopping Centre','Great North Road','Chongwe Turn-off','Ndeke Primary'],
+  badges:['Verified Agent'], agent:'a4', daysAgo:5, views:846, enquiries:14, featured:false
+},
+{
+  id:'l3', ref:'LUS-ROM-3311', type:'apartment', purpose:'rent', furnished:true,
+  title:'Furnished 2 Bedroom Apartment in Roma',
+  desc:`Fully furnished two-bedroom apartment available to let in Roma, a short drive from Arcades Mall and UNZA. Rent includes water, Wi-Fi, DSTV and estate security.
+
+Both bedrooms are en-suite with air conditioning. The apartment comes with a fitted kitchen (fridge, cooker, microwave), washing machine, and a balcony overlooking the gardens.
+
+Minimum 12-month lease. One month deposit required.`,
+  price:9500, currency:'ZMW', beds:2, baths:2, plot:0, plotUnit:'m²', floor:96,
+  province:'Lusaka', city:'Lusaka', suburb:'Roma',
+  power:['ZESCO','Inverter'], water:['Council'], gated:true, titleType:'Title Deed',
+  amenities:['Furnished','Air conditioning','Wi-Fi','Swimming pool','24hr security','Gym','Parking'],
+  photos:[PH.ap,PH.i2,PH.i1,PH.h5],
+  video:'',
+  lat:-15.3902, lng:28.3421,
+  nearby:['Arcades Mall','UNZA Great East Road','Roma Shopping','East Park Mall'],
+  badges:['Exclusive'], agent:'a1', daysAgo:1, views:2103, enquiries:41, featured:true
+},
+{
+  id:'l4', ref:'LUS-IBX-1190', type:'land', purpose:'sale',
+  title:'2,000 m² Vacant Plot in Ibex Hill',
+  desc:`Prime residential plot in Ibex Hill, one of Lusaka's fastest-growing low-density suburbs. The plot is rectangular, flat and ready to build on, with a gentle slope for drainage.
+
+Council water mains run along the road; several neighbours have already drilled boreholes. Title deed is ready for transfer. All rates and service charges are up to date.
+
+Ideal for a family home or a small cluster development.`,
+  price:65000, currency:'USD', beds:0, baths:0, plot:2000, plotUnit:'m²', floor:0,
+  province:'Lusaka', city:'Lusaka', suburb:'Ibex Hill',
+  power:['ZESCO'], water:['Council'], gated:false, titleType:'Title Deed',
+  amenities:['Walled','Tarred road','Water mains','Title deed ready'],
+  photos:[PH.land,PH.field,PH.land],
+  video:'',
+  lat:-15.3712, lng:28.3601,
+  nearby:['Ibex Hill Shopping','Leopards Hill Road','American International School','Lake Road'],
+  badges:[], agent:'a5', daysAgo:9, views:512, enquiries:7, featured:false
+},
+{
+  id:'l5', ref:'NDO-ITA-4402', type:'house', purpose:'sale',
+  title:'3 Bedroom House in Itawa, Ndola',
+  desc:`Solid three-bedroom house in Itawa, Ndola, on a 900 m² plot. The house has a spacious lounge, separate dining room, fitted kitchen and two bathrooms. There is a boys' quarter at the back and a single carport.
+
+ZESCO power and council water are connected. The yard is fully walled with a metal gate and has space for a garden.
+
+Walking distance to Itawa Market and close to the Ndola Teaching Hospital.`,
+  price:950000, currency:'ZMW', beds:3, baths:2, plot:900, plotUnit:'m²', floor:168,
+  province:'Copperbelt', city:'Ndola', suburb:'Itawa',
+  power:['ZESCO'], water:['Council'], gated:false, titleType:'Title Deed',
+  amenities:['Garden','Walled','Staff quarters','Carport'],
+  photos:[PH.h2,PH.h7,PH.i2],
+  video:'',
+  lat:-12.9701, lng:28.6412,
+  nearby:['Itawa Market','Ndola Teaching Hospital','Ndola Golf Club','Masala Secondary'],
+  badges:['Verified Agent'], agent:'a2', daysAgo:6, views:734, enquiries:11, featured:false
+},
+{
+  id:'l6', ref:'KTW-NKE-5521', type:'house', purpose:'rent', furnished:false,
+  title:'4 Bedroom House to Let in Nkana East, Kitwe',
+  desc:`Spacious four-bedroom house available to let in Nkana East, Kitwe. Unfurnished but with built-in wardrobes and a fitted kitchen.
+
+Features include a large lounge, dining area, three bathrooms, a study, a double carport and a well-kept garden. The property is in a quiet, leafy street popular with mining executives.
+
+Lease is 12 months minimum, payable quarterly in advance.`,
+  price:7500, currency:'ZMW', beds:4, baths:3, plot:1250, plotUnit:'m²', floor:240,
+  province:'Copperbelt', city:'Kitwe', suburb:'Nkana East',
+  power:['ZESCO','Generator'], water:['Council','Borehole'], gated:true, titleType:'Title Deed',
+  amenities:['Garden','Walled','Carport','Study','Staff quarters','Borehole'],
+  photos:[PH.h8,PH.h10,PH.i1],
+  video:'',
+  lat:-12.8102, lng:28.2118,
+  nearby:['Nkana Golf Club','Kitwe CBD','Copperbelt University','Mukuba Mall'],
+  badges:[], agent:'a2', daysAgo:3, views:621, enquiries:9, featured:false
+},
+{
+  id:'l7', ref:'LIV-MOS-9901', type:'apartment', purpose:'short', furnished:true,
+  title:'Victoria Falls Short-Stay Apartment, Livingstone',
+  desc:`Two-bedroom self-catering apartment five minutes from Victoria Falls. Fully furnished with air conditioning, fast Wi-Fi and a private patio with garden views.
+
+Perfect for holidaymakers, birders and business travellers. Sleeps up to 4 guests. Daily housekeeping available on request. Airport transfers can be arranged.
+
+Minimum 2-night stay. Rates shown are per night and include tourism levy.`,
+  price:85, currency:'USD', beds:2, baths:2, plot:0, plotUnit:'m²', floor:88,
+  province:'Southern', city:'Livingstone', suburb:'Mosi-oa-Tunya',
+  power:['ZESCO','Solar'], water:['Council'], gated:true, titleType:'Leasehold',
+  amenities:['Furnished','Air conditioning','Wi-Fi','Swimming pool','Parking','DSTV','Kitchen'],
+  photos:[PH.h9,PH.i2,PH.h4,PH.h1],
+  video:'',
+  lat:-17.8576, lng:25.8544,
+  nearby:['Victoria Falls','Mosi-oa-Tunya National Park','Livingstone Museum','Harry Mwaanga Nkumbula Airport'],
+  badges:['Exclusive'], agent:'a3', daysAgo:0, views:1892, enquiries:37, featured:true
+},
+{
+  id:'l8', ref:'KTW-CBD-7733', type:'commercial', purpose:'rent', furnished:false,
+  title:'800 m² Warehouse in Kitwe CBD',
+  desc:`Warehouse and office space available to let in the Kitwe CBD, suitable for mining supply, logistics or light manufacturing.
+
+The warehouse offers 800 m² of clear-span floor space with a 6 m eaves height, roller shutter access for 30-tonne trucks, and a concrete hardstand yard. Attached are 120 m² of offices, ablutions and a staff canteen.
+
+Three-phase ZESCO power with a back-up generator. Secure walled yard with 24-hour guarding.`,
+  price:35000, currency:'ZMW', beds:0, baths:2, plot:2200, plotUnit:'m²', floor:920,
+  province:'Copperbelt', city:'Kitwe', suburb:'Kitwe CBD',
+  power:['ZESCO','Generator'], water:['Council'], gated:true, titleType:'Leasehold',
+  amenities:['3-phase power','Loading bay','24hr security','Offices','Walled','Generator'],
+  photos:[PH.com,PH.ind,PH.off],
+  video:'',
+  lat:-12.8024, lng:28.2132,
+  nearby:['Kitwe CBD','President Avenue','Kitwe Railway Station','Chisokone Market'],
+  badges:['Verified Agent'], agent:'a2', daysAgo:12, views:388, enquiries:6, featured:false
+},
+{
+  id:'l9', ref:'CEN-CHS-6600', type:'farm', purpose:'sale',
+  title:'25 Hectare Farm in Chisamba',
+  desc:`Productive 25-hectare farm in the Chisamba farming block, 45 minutes from Lusaka on the Great North Road.
+
+Currently under 12 hectares of rain-fed maize with the remainder under natural grazing. Improvements include a borehole with solar pump, a 200 m² farmhouse (3 bedrooms), a labour compound, a 300 m² shed and cattle handling facilities.
+
+Certificate of title available. Ideal for mixed farming, poultry or a weekend retreat.`,
+  price:3200000, currency:'ZMW', beds:3, baths:2, plot:25, plotUnit:'ha', floor:200,
+  province:'Central', city:'Chisamba', suburb:'Chisamba Farms',
+  power:['ZESCO','Solar'], water:['Borehole'], gated:false, titleType:'Title Deed',
+  amenities:['Borehole','Solar pump','Farmhouse','Shed','Grazing','Labour compound'],
+  photos:[PH.field,PH.land,PH.h10],
+  video:'',
+  lat:-14.9412, lng:28.4211,
+  nearby:['Great North Road','Chisamba Town','Farmers Market','Mwayasunzu School'],
+  badges:[], agent:'a5', daysAgo:16, views:295, enquiries:5, featured:false
+},
+{
+  id:'l10', ref:'LUS-SIL-8814', type:'house', purpose:'sale',
+  title:'3 Bedroom House in Silverest Gardens',
+  desc:`Brand new three-bedroom house in Silverest Gardens, just off the Great East Road. The house features a modern open-plan kitchen, spacious lounge with patio doors onto a lawn, three bedrooms (master en-suite) and a shared bathroom.
+
+The estate has paved roads, street lighting, 24-hour security and a communal borehole. Fibre internet is available in the area.
+
+Completion was in 2024 — no renovation needed.`,
+  price:1250000, currency:'ZMW', beds:3, baths:2, plot:450, plotUnit:'m²', floor:150,
+  province:'Lusaka', city:'Lusaka', suburb:'Silverest',
+  power:['ZESCO','Solar'], water:['Borehole'], gated:true, titleType:'Title Deed',
+  amenities:['Garden','Walled','24hr security','Solar geyser','Paved road','Fibre ready'],
+  photos:[PH.h3,PH.h6,PH.i1,PH.i2],
+  video:'',
+  lat:-15.3211, lng:28.4902,
+  nearby:['Silverest Shopping','Great East Road','Chongwe','Kabulonga International'],
+  badges:['New'], agent:'a4', daysAgo:4, views:967, enquiries:16, featured:false
+},
+{
+  id:'l11', ref:'KTW-RIV-2244', type:'apartment', purpose:'rent', furnished:false,
+  title:'2 Bedroom Apartment to Let in Riverside, Kitwe',
+  desc:`Two-bedroom apartment in a small, well-managed block in Riverside, Kitwe. Open-plan lounge and kitchen, one bathroom plus separate toilet, and a private balcony.
+
+The block has secure parking, a shared garden and a standby borehole. ZESCO prepaid meter in the unit.
+
+Available immediately. Water included in the rent.`,
+  price:5500, currency:'ZMW', beds:2, baths:1, plot:0, plotUnit:'m²', floor:78,
+  province:'Copperbelt', city:'Kitwe', suburb:'Riverside',
+  power:['ZESCO'], water:['Council','Borehole'], gated:true, titleType:'Leasehold',
+  amenities:['Parking','Garden','24hr security','Balcony','Borehole'],
+  photos:[PH.ap,PH.i2,PH.h5],
+  video:'',
+  lat:-12.8264, lng:28.1987,
+  nearby:['Riverside Market','Kitwe Teaching Hospital','Mukuba Mall','Nkana Stadium'],
+  badges:[], agent:'a2', daysAgo:7, views:445, enquiries:8, featured:false
+},
+{
+  id:'l12', ref:'LUS-WST-4477', type:'land', purpose:'sale',
+  title:'1,500 m² Industrial Plot in Lusaka West',
+  desc:`Industrial plot in Lusaka West with good access to the Mumbwa Road and the Lusaka–Mongu highway. Zoned for light industrial and warehousing use.
+
+The plot is flat and fenced on three sides, with three-phase power lines running along the boundary road. Water is available from the council mains.
+
+Suitable for a warehouse, workshop or yard. Title deed available.`,
+  price:780000, currency:'ZMW', beds:0, baths:0, plot:1500, plotUnit:'m²', floor:0,
+  province:'Lusaka', city:'Lusaka', suburb:'Lusaka West',
+  power:['ZESCO'], water:['Council'], gated:false, titleType:'Title Deed',
+  amenities:['3-phase power','Tarred road','Water mains','Fenced'],
+  photos:[PH.land,PH.ind],
+  video:'',
+  lat:-15.3748, lng:28.1922,
+  nearby:['Mumbwa Road','Lusaka West Industrial','City Market','Lilayi Road'],
+  badges:[], agent:'a5', daysAgo:20, views:331, enquiries:4, featured:false
+},
+{
+  id:'l13', ref:'LIV-DAM-1123', type:'house', purpose:'sale',
+  title:'5 Bedroom House in Dambwa, Livingstone',
+  desc:`Generous five-bedroom family home in Dambwa North, Livingstone. Set on a 1,100 m² plot with a mature garden and fruit trees.
+
+The house has a large lounge, dining room, fitted kitchen, four bathrooms and a self-contained one-bedroom annex — ideal for guests or rental. There is a double carport and staff quarters.
+
+Council water and ZESCO connected. The property is walled with a remote gate.`,
+  price:145000, currency:'USD', beds:5, baths:4, plot:1100, plotUnit:'m²', floor:290,
+  province:'Southern', city:'Livingstone', suburb:'Dambwa',
+  power:['ZESCO','Inverter'], water:['Council','Borehole'], gated:true, titleType:'Title Deed',
+  amenities:['Garden','Walled','Annex','Staff quarters','Carport','Borehole','Fruit trees'],
+  photos:[PH.h7,PH.h10,PH.i2,PH.h2],
+  video:'',
+  lat:-17.8412, lng:25.8321,
+  nearby:['Dambwa Market','Livingstone Central','Mukuni Park','Livingstone Hospital'],
+  badges:['Verified Agent'], agent:'a3', daysAgo:11, views:702, enquiries:12, featured:false
+},
+{
+  id:'l14', ref:'LUS-MWV-5000', type:'townhouse', purpose:'sale',
+  title:'Meanwood Valley Estate — 40 Units Off-Plan',
+  desc:`Meanwood Valley is a new 40-unit gated estate in Lusaka, offering 3-bedroom townhouses and 4-bedroom detached units. Phase 1 (16 units) is now selling off-plan with completion expected in Q4 2025.
+
+Each unit comes with a fitted kitchen, solar geyser, prepaid ZESCO meter and a private garden. The estate will feature paved internal roads, street lighting, a communal borehole, a children's play area and 24-hour security.
+
+Payment plans available: 40% deposit, balance over 12 months, or mortgage through our partner banks. Show-house viewings every Saturday.`,
+  price:1900000, currency:'ZMW', beds:3, baths:2, plot:300, plotUnit:'m²', floor:158,
+  province:'Lusaka', city:'Lusaka', suburb:'Meanwood Valley',
+  power:['ZESCO','Solar'], water:['Borehole','Council'], gated:true, titleType:'Title Deed',
+  amenities:['Gated estate','24hr security','Paved roads','Street lighting','Solar geyser','Play area','Fibre ready'],
+  photos:[PH.h3,PH.h6,PH.h9,PH.i1,PH.h8],
+  video:'https://www.youtube.com/watch?v=example',
+  lat:-15.3388, lng:28.4102,
+  nearby:['Meanwood Shopping Centre','Great North Road','Ndeke Primary','Chongwe'],
+  badges:['Exclusive','Verified Agent'], agent:'a4', daysAgo:0, views:2451, enquiries:58, featured:true
+},
+{
+  id:'l15', ref:'SOL-SOL-3344', type:'land', purpose:'sale',
+  title:'900 m² Residential Plot in Solwezi',
+  desc:`Residential plot in a fast-developing part of Solwezi, North-Western Province. The plot is within a surveyed layout with graded access roads and ZESCO lines nearby.
+
+Solwezi has seen strong demand from the mining sector, making this a solid medium-term investment. Council water is planned for the area; neighbours use boreholes.
+
+Certificate of title in place, ready for transfer.`,
+  price:320000, currency:'ZMW', beds:0, baths:0, plot:900, plotUnit:'m²', floor:0,
+  province:'North-Western', city:'Solwezi', suburb:'Solwezi Central',
+  power:['ZESCO'], water:['Borehole'], gated:false, titleType:'Title Deed',
+  amenities:['Graded roads','Surveyed','Title deed ready'],
+  photos:[PH.land,PH.field],
+  video:'',
+  lat:-12.1782, lng:26.4011,
+  nearby:['Solwezi CBD','Kansanshi Mine','Solwezi Airport','Kimasala Market'],
+  badges:[], agent:'a5', daysAgo:14, views:274, enquiries:3, featured:false
+},
+{
+  id:'l16', ref:'LUS-CHA-7701', type:'townhouse', purpose:'sale',
+  title:'3 Bedroom Townhouse in Chalala',
+  desc:`Well-presented three-bedroom townhouse in a small cluster of six in Chalala, Lusaka. The unit has an open-plan lounge and kitchen, three bedrooms (master en-suite), a shared bathroom and a private walled garden.
+
+The cluster shares a borehole, a security guard and refuse collection. There are two dedicated parking bays.
+
+Close to Chalala Market, Lake Road and the new shopping developments on Kabulonga Road.`,
+  price:1450000, currency:'ZMW', beds:3, baths:2, plot:200, plotUnit:'m²', floor:138,
+  province:'Lusaka', city:'Lusaka', suburb:'Chalala',
+  power:['ZESCO','Inverter'], water:['Borehole','Council'], gated:true, titleType:'Title Deed',
+  amenities:['Garden','Walled','24hr security','Borehole','Parking','Inverter'],
+  photos:[PH.h8,PH.h5,PH.i1],
+  video:'',
+  lat:-15.4012, lng:28.3411,
+  nearby:['Chalala Market','Lake Road','Kabulonga Road','Chalala Primary'],
+  badges:['Verified Agent'], agent:'a1', daysAgo:8, views:588, enquiries:10, featured:false
+}
+];
+
+/* Map ref → listing */
+const byRef = Object.fromEntries(LISTINGS.map(l => [l.ref, l]));
+const byId  = Object.fromEntries(LISTINGS.map(l => [l.id, l]));
+
+/* ============================================================
+   2. STATE
+   ============================================================ */
+const defaultFilters = () => ({
+  q:'', purpose:'', type:'', province:'', city:'',
+  minZ:null, maxZ:null, beds:0, baths:0, minPlot:0,
+  amenities:[], power:[], water:[],
+  sort:'newest'
+});
+
+const state = {
+  currency: localStorage.getItem('nz_cur') || 'ZMW',
+  favourites: new Set(JSON.parse(localStorage.getItem('nz_favs') || '[]')),
+  user: JSON.parse(localStorage.getItem('nz_user') || 'null'),
+  filters: defaultFilters(),
+  view: 'list',
+  postStep: 1,
+  draft: JSON.parse(localStorage.getItem('nz_draft') || 'null'),
+  myListings: JSON.parse(localStorage.getItem('nz_mine') || '[]')
+};
+
+/* ============================================================
+   3. ROUTER
+   ============================================================ */
+function parseHash() {
+  const raw = location.hash.replace(/^#/, '') || '/';
+  const [path, qs] = raw.split('?');
+  return { path: path || '/', params: new URLSearchParams(qs || '') };
+}
+
+function seedFiltersFromParams(p) {
+  const f = defaultFilters();
+  let seeded = false;
+  const set = (k, v) => { if (v != null && v !== '') { f[k] = v; seeded = true; } };
+  set('q', p.get('q'));
+  set('purpose', p.get('purpose'));
+  set('type', p.get('type'));
+  set('province', p.get('province'));
+  set('city', p.get('city'));
+  set('sort', p.get('sort'));
+  if (seeded) state.filters = f;
+}
+
+function navigate(hash) { location.hash = hash; }
+
+function route() {
+  const { path, params } = parseHash();
+  const app = $('#app');
+  window.scrollTo(0, 0);
+
+  if (path === '/' || path === '') {
+    document.title = "Nyumba — Zambia's Property Marketplace";
+    app.innerHTML = homeView();
+    bindHome();
+  } else if (path === '/search') {
+    seedFiltersFromParams(params);
+    document.title = 'Search property in Zambia — Nyumba';
+    app.innerHTML = searchView();
+    bindSearch();
+  } else if (path.startsWith('/property/')) {
+    const ref = decodeURIComponent(path.split('/')[2] || '');
+    const listing = byRef[ref];
+    if (!listing) { app.innerHTML = notFoundView(); }
+    else {
+      document.title = `${listing.title} — ${priceExact(listing, 'ZMW')} | Nyumba Zambia`;
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute('content', listing.desc.slice(0, 155));
+      app.innerHTML = detailView(listing);
+      bindDetail(listing);
+    }
+  } else if (path === '/post') {
+    document.title = 'Post a property — Nyumba';
+    app.innerHTML = postView();
+    bindPost();
+  } else if (path === '/saved') {
+    document.title = 'Saved properties — Nyumba';
+    app.innerHTML = savedView();
+  } else if (path === '/account') {
+    document.title = 'My account — Nyumba';
+    app.innerHTML = accountView();
+  } else if (path === '/advice') {
+    document.title = 'Property advice & guides — Nyumba';
+    app.innerHTML = adviceView();
+  } else if (path === '/agents') {
+    document.title = 'Estate agents in Zambia — Nyumba';
+    app.innerHTML = agentsView();
+  } else {
+    app.innerHTML = notFoundView();
+  }
+
+  updateChrome(path);
+}
+
+function updateChrome(path) {
+  $$('#tabbar a').forEach(a => {
+    const tab = a.dataset.tab;
+    a.classList.toggle('on', tab === path || (tab === '/search' && path.startsWith('/property')));
+  });
+  $$('#curToggle button').forEach(b => b.classList.toggle('on', b.dataset.val === state.currency));
+  const hp = $('#hdrPost');
+  if (hp) hp.style.display = window.innerWidth >= 860 ? 'inline-flex' : 'none';
+  const postTab = $('#tabbar a[data-tab="/post"]');
+  if (postTab) postTab.classList.toggle('on', path === '/post');
+}
+
+window.addEventListener('hashchange', route);
+window.addEventListener('resize', () => updateChrome(parseHash().path));
+
+/* ============================================================
+   4. SHARED UI HELPERS
+   ============================================================ */
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function openModal(html) {
+  $('#modal-root').innerHTML =
+    `<div class="overlay" data-act="close-modal"><div class="modal" onclick="event.stopPropagation()">${html}</div></div>`;
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  $('#modal-root').innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+function icon(name) {
+  const paths = {
+    pin:'<path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/>',
+    bed:'<path d="M3 18v-6h18v6"/><path d="M3 12V7"/><path d="M7 12V9h5v3"/><path d="M3 18h18"/>',
+    bath:'<path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3Z"/><path d="M7 12V6a2 2 0 0 1 3.5-1.3"/>',
+    size:'<path d="M4 9V4h5"/><path d="M20 15v5h-5"/><path d="M4 4l6 6"/><path d="M20 20l-6-6"/>',
+    check:'<path d="m4 12 5 5L20 6"/>',
+    shield:'<path d="M12 3 5 6v5c0 4.4 3 8.2 7 9.5 4-1.3 7-5.1 7-9.5V6l-7-3Z"/>',
+    alert:'<path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 2.5 17.4A2 2 0 0 0 4.2 20.5h15.6a2 2 0 0 0 1.7-3.1L13.7 3.9a2 2 0 0 0-3.4 0Z"/>',
+    arrow:'<path d="m15 18-6-6 6-6"/>',
+    home:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/>',
+    building:'<path d="M4 21V4h9v17"/><path d="M13 10h7v11"/><path d="M7 8h3M7 12h3M7 16h3"/>',
+    apt:'<rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/>',
+    land:'<path d="M3 18h18"/><path d="M6 18V9l6-4 6 4v9"/><path d="M12 5v13"/>',
+    farm:'<path d="M3 20h18"/><path d="M6 20V11l6-5 6 5v9"/><path d="M10 20v-5h4v5"/>',
+    commercial:'<rect x="3" y="7" width="18" height="14" rx="1.5"/><path d="M8 7V4h8v3"/><path d="M3 12h18"/>',
+    industrial:'<path d="M3 21V10l6 4V10l6 4V7l6 4v10H3Z"/>',
+    heart:'<path d="M12 20s-7-4.4-7-9.3A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.7C19 15.6 12 20 12 20Z"/>',
+    whatsapp:'<path d="M20.5 11.6a8.4 8.4 0 0 1-12.4 7.4L3.5 20.5l1.6-4.5a8.4 8.4 0 1 1 15.4-4.4Z"/><path d="M8.5 9.5c.2 2.4 2.1 4.3 4.5 4.5l1-1.3 1.7.8v1.6c-2.9.4-6.5-2.9-7.4-6.3l1.6-.1.8 1.7-1 1.1"/>',
+    phone:'<path d="M5 3h3l2 5-2 1.5a11 11 0 0 0 5.5 5.5L15 13l5 2v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.2 2 2 0 0 1 5 3Z"/>',
+    share:'<circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.3 10.7 7.4-4.3M8.3 13.3l7.4 4.3"/>',
+    link:'<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/>',
+    fb:'<path d="M15 3h-2.5A4.5 4.5 0 0 0 8 7.5V10H5v4h3v7h4v-7h3l1-4h-4V7.5a1 1 0 0 1 1-1H15V3Z"/>',
+    camera:'<path d="M3 8h3l2-2h8l2 2h3v11H3V8Z"/><circle cx="12" cy="13" r="3.4"/>'
+  };
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[name] || ''}</svg>`;
+}
+
+function badgeHTML(kind) {
+  const map = {
+    featured:['Featured','feat'],
+    exclusive:['Exclusive','exc'],
+    verified:['Verified','ver'],
+    new:['New','new']
+  };
+  const m = map[kind];
+  return m ? `<span class="badge ${m[1]}">${m[0]}</span>` : '';
+}
+
+function cardBadges(l) {
+  const out = [];
+  if (l.featured) out.push('featured');
+  if ((l.badges || []).includes('Exclusive')) out.push('exclusive');
+  const a = AGENTS[l.agent];
+  if (a && a.verified) out.push('verified');
+  if (l.daysAgo <= 3) out.push('new');
+  return out.slice(0, 2).map(badgeHTML).join('');
+}
+
+function typeLabel(t) {
+  return ({ house:'House', apartment:'Apartment', townhouse:'Townhouse', commercial:'Commercial',
+            industrial:'Industrial', farm:'Farm', land:'Vacant land' })[t] || t;
+}
+function purposeLabel(p) {
+  return ({ sale:'For sale', rent:'To let', short:'Short stay' })[p] || p;
+}
+
+/* ============================================================
+   5. LISTING CARD
+   ============================================================ */
+function cardHTML(l) {
+  const isFav = state.favourites.has(l.id);
+  const metaBits = [];
+  if (l.beds) metaBits.push(`<b>${l.beds}</b> bed${l.beds > 1 ? 's' : ''}`);
+  if (l.baths) metaBits.push(`<b>${l.baths}</b> bath${l.baths > 1 ? 's' : ''}`);
+  if (l.plot) metaBits.push(`<b>${l.plot.toLocaleString('en-US')}</b> ${l.plotUnit}`);
+
+  return `
+  <a class="card" href="#/property/${encodeURIComponent(l.ref)}">
+    <div class="card-media">
+      <img src="${imgUrl(l.photos[0], 520)}" alt="${esc(l.title)}"
+           loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${FALLBACK}'">
+      <div class="card-badges">${cardBadges(l)}</div>
+      <button class="fav-btn ${isFav ? 'on' : ''}" data-act="fav" data-id="${l.id}" aria-label="Save property">
+        ${icon('heart')}
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="card-price">${priceText(l, state.currency)}</div>
+      <div class="card-title">${esc(l.title)}</div>
+      <div class="card-meta">${metaBits.join('<span style="color:#cbd5d0">·</span>') || '<span>' + typeLabel(l.type) + '</span>'}</div>
+      <div class="card-loc">${icon('pin')} ${esc(l.suburb)}, ${esc(l.city)}</div>
+    </div>
+  </a>`;
+}
+
+/* ============================================================
+   6. HOME VIEW
+   ============================================================ */
+function homeView() {
+  const featured = LISTINGS.filter(l => l.featured).slice(0, 6);
+  const latest = [...LISTINGS].sort((a, b) => a.daysAgo - b.daysAgo).slice(0, 6);
+  const land = LISTINGS.filter(l => l.type === 'land' || l.type === 'farm').slice(0, 3);
+
+  return `
+  <section class="hero">
+    <div class="wrap">
+      <h1>Find your next home in Zambia</h1>
+      <p>Houses, apartments, land and commercial property across Lusaka, the Copperbelt, Livingstone and beyond.</p>
+      <div class="searchbox">
+        <div class="seg" id="homePurpose">
+          <button class="on" data-p="sale">Buy</button>
+          <button data-p="rent">Rent</button>
+          <button data-p="short">Short stay</button>
+          <button data-p="sale" data-t="land">Land</button>
+        </div>
+        <div class="row">
+          <input id="homeQuery" type="search" placeholder="Area, city or suburb e.g. Kabulonga" autocomplete="off">
+          <button class="btn btn-primary" id="homeSearchBtn">Search</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+
+    <div class="section" style="padding-bottom:0">
+      <div class="chips">
+        <a class="chip" href="#/search?province=Lusaka">📍 Lusaka</a>
+        <a class="chip" href="#/search?province=Copperbelt">📍 Copperbelt</a>
+        <a class="chip" href="#/search?province=Southern">📍 Livingstone</a>
+        <a class="chip" href="#/search?purpose=sale&type=land">🗺️ Land & plots</a>
+        <a class="chip" href="#/search?purpose=rent">🔑 To let</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="warn">
+        ${icon('alert')}
+        <div>
+          <b>Stay safe when viewing property</b>
+          Never pay a deposit before viewing the property in person, and always verify the title deed at the Ministry of Lands. Nyumba will never ask you to send money to an agent's personal account.
+        </div>
+      </div>
+    </div>
+
+    <section class="section" style="padding-top:4px">
+      <div class="section-hd">
+        <div>
+          <h2>Featured properties</h2>
+          <p>Hand-picked by our team this week</p>
+        </div>
+        <a href="#/search">See all →</a>
+      </div>
+      <div class="grid">${featured.map(cardHTML).join('')}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-hd"><div><h2>Browse by property type</h2></div></div>
+      <div class="tiles">
+        ${[
+          ['house','Houses',`${LISTINGS.filter(l=>l.type==='house').length} listings`,'home'],
+          ['apartment','Apartments',`${LISTINGS.filter(l=>l.type==='apartment').length} listings`,'apt'],
+          ['townhouse','Townhouses',`${LISTINGS.filter(l=>l.type==='townhouse').length} listings`,'building'],
+          ['land','Land & plots',`${LISTINGS.filter(l=>l.type==='land').length} listings`,'land'],
+          ['commercial','Commercial',`${LISTINGS.filter(l=>l.type==='commercial').length} listings`,'commercial'],
+          ['farm','Farms',`${LISTINGS.filter(l=>l.type==='farm').length} listings`,'farm'],
+          ['industrial','Industrial',`${LISTINGS.filter(l=>l.type==='industrial').length} listings`,'industrial'],
+        ].map(([t, name, count, ic]) => `
+          <a class="tile" href="#/search?type=${t}">
+            ${icon(ic)}<b>${name}</b><small>${count}</small>
+          </a>`).join('')}
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-hd">
+        <div><h2>Explore by region</h2></div>
+      </div>
+      <div class="grid two">
+        <a class="area-card" href="#/search?province=Lusaka">
+          <img src="${imgUrl(PH.h1, 600)}" alt="Lusaka" loading="lazy" onerror="this.src='${FALLBACK}'">
+          <div class="ov"></div>
+          <div class="txt"><b>Lusaka</b><small>Kabulonga · Roma · Meanwood · Chalala</small></div>
+        </a>
+        <a class="area-card" href="#/search?province=Copperbelt">
+          <img src="${imgUrl(PH.h7, 600)}" alt="Copperbelt" loading="lazy" onerror="this.src='${FALLBACK}'">
+          <div class="ov"></div>
+          <div class="txt"><b>Copperbelt</b><small>Kitwe · Ndola · Chingola · Mufulira</small></div>
+        </a>
+        <a class="area-card" href="#/search?province=Southern">
+          <img src="${imgUrl(PH.h9, 600)}" alt="Livingstone" loading="lazy" onerror="this.src='${FALLBACK}'">
+          <div class="ov"></div>
+          <div class="txt"><b>Livingstone</b><small>Victoria Falls · Dambwa · Mosi-oa-Tunya</small></div>
+        </a>
+        <a class="area-card" href="#/search?purpose=sale&type=land">
+          <img src="${imgUrl(PH.land, 600)}" alt="Land" loading="lazy" onerror="this.src='${FALLBACK}'">
+          <div class="ov"></div>
+          <div class="txt"><b>Land & investment</b><small>Plots, farms and industrial land</small></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-hd">
+        <div><h2>Newest listings</h2><p>Fresh on the market</p></div>
+        <a href="#/search">See all →</a>
+      </div>
+      <div class="grid">${latest.map(cardHTML).join('')}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-hd"><div><h2>Investment hotspots</h2><p>Average asking prices, updated monthly</p></div></div>
+      <div class="panel">
+        ${[
+          ['Kabulonga, Lusaka', 'K3.8M', '+9.2%'],
+          ['Meanwood, Lusaka', 'K1.9M', '+11.4%'],
+          ['Ibex Hill, Lusaka', 'K2.6M', '+7.8%'],
+          ['Nkana East, Kitwe', 'K1.1M', '+5.1%'],
+          ['Dambwa, Livingstone', 'K780K', '+6.6%'],
+          ['Solwezi, North-Western', 'K620K', '+14.3%']
+        ].map(([area, price, growth]) => `
+          <div class="spec-row">
+            <span>${area}</span>
+            <b>${price} <span style="color:#0b6b4f;font-size:12px">▲ ${growth}</span></b>
+          </div>`).join('')}
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-hd">
+        <div><h2>Land & investment properties</h2></div>
+        <a href="#/search?purpose=sale&type=land">See all →</a>
+      </div>
+      <div class="grid">${land.map(cardHTML).join('')}</div>
+    </section>
+
+    <section class="section" style="padding-bottom:40px">
+      <div class="panel" style="background:linear-gradient(135deg,#0b6b4f,#14a173);color:#fff;border:0;padding:20px 18px">
+        <h3 style="color:#fff;font-size:17px;margin-bottom:6px">Have a property to sell or let?</h3>
+        <p style="color:rgba(255,255,255,.9);font-size:13px;margin-bottom:14px;white-space:normal">
+          List it free in under five minutes. Reach thousands of buyers and tenants across Zambia — no commission, no hidden fees.
+        </p>
+        <a href="#/post" class="btn" style="background:#fff;color:var(--green);width:100%">Post a property — free</a>
+      </div>
+    </section>
+  </div>`;
+}
+
+function bindHome() {
+  let purpose = 'sale', type = '';
+  $$('#homePurpose button').forEach(b => {
+    b.addEventListener('click', () => {
+      $$('#homePurpose button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      purpose = b.dataset.p;
+      type = b.dataset.t || '';
+    });
+  });
+  const go = () => {
+    const q = $('#homeQuery').value.trim();
+    const p = new URLSearchParams();
+    if (purpose) p.set('purpose', purpose);
+    if (type) p.set('type', type);
+    if (q) p.set('q', q);
+    navigate('#/search?' + p.toString());
+  };
+  $('#homeSearchBtn').addEventListener('click', go);
+  $('#homeQuery').addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+}
+
+/* ============================================================
+   7. SEARCH VIEW
+   ============================================================ */
+function applyFilters(list) {
+  const f = state.filters;
+  let out = list.filter(l => {
+    if (f.purpose && l.purpose !== f.purpose) return false;
+    if (f.type && l.type !== f.type) return false;
+    if (f.province && l.province !== f.province) return false;
+    if (f.city && l.city !== f.city) return false;
+    if (f.beds && (l.beds || 0) < f.beds) return false;
+    if (f.baths && (l.baths || 0) < f.baths) return false;
+    if (f.minPlot) {
+      const sqm = l.plotUnit === 'ha' ? l.plot * 10000 : l.plot;
+      if (sqm < f.minPlot) return false;
+    }
+    const z = toZMW(l.price, l.currency);
+    if (f.minZ != null && z < f.minZ) return false;
+    if (f.maxZ != null && z > f.maxZ) return false;
+    if (f.amenities.length && !f.amenities.every(a => (l.amenities || []).includes(a))) return false;
+    if (f.power.length && !f.power.some(p => (l.power || []).includes(p))) return false;
+    if (f.water.length && !f.water.some(w => (l.water || []).includes(w))) return false;
+    if (f.q) {
+      const hay = [l.title, l.suburb, l.city, l.province, l.ref, l.desc, typeLabel(l.type)].join(' ').toLowerCase();
+      if (!hay.includes(f.q.toLowerCase())) return false;
+    }
+    return true;
+  });
+
+  const price = l => toZMW(l.price, l.currency);
+  const size  = l => l.plotUnit === 'ha' ? l.plot * 10000 : l.plot;
+  if (f.sort === 'newest') out.sort((a, b) => a.daysAgo - b.daysAgo);
+  if (f.sort === 'price-asc') out.sort((a, b) => price(a) - price(b));
+  if (f.sort === 'price-desc') out.sort((a, b) => price(b) - price(a));
+  if (f.sort === 'size-desc') out.sort((a, b) => size(b) - size(a));
+  return out;
+}
+
+function activeFilterCount() {
+  const f = state.filters;
+  let n = 0;
+  if (f.purpose) n++;
+  if (f.type) n++;
+  if (f.province) n++;
+  if (f.city) n++;
+  if (f.minZ != null || f.maxZ != null) n++;
+  if (f.beds) n++;
+  if (f.baths) n++;
+  if (f.minPlot) n++;
+  n += f.amenities.length + f.power.length + f.water.length;
+  return n;
+}
+
+const PROVINCES = ['Lusaka','Copperbelt','Southern','Central','North-Western','Eastern','Northern','Luapula','Muchinga','Western'];
+const CITIES = {
+  Lusaka:['Lusaka'], Copperbelt:['Kitwe','Ndola','Chingola','Mufulira'], Southern:['Livingstone','Choma','Kalomo'],
+  Central:['Chisamba','Kabwe'], 'North-Western':['Solwezi'], Eastern:['Chipata'], Northern:['Kasama'],
+  Luapula:['Mansa'], Muchinga:['Chinsali'], Western:['Mongu']
+};
+const AMENITY_LIST = ['Swimming pool','Garden','Air conditioning','Cottage','Borehole','Walled','Electric fence',
+  'Staff quarters','Carport','24hr security','Furnished','Wi-Fi','Solar geyser','Parking'];
+
+function searchView() {
+  const f = state.filters;
+  const results = applyFilters(LISTINGS);
+  const count = activeFilterCount();
+
+  return `
+  <div class="search-head">
+    <div class="wrap">
+      <div class="searchbar">
+        ${icon('search').replace('currentColor','#6a7a72')}
+        <input id="searchQ" type="search" placeholder="Search area, suburb or reference…" value="${esc(f.q)}" autocomplete="off">
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-outline btn-sm" data-act="open-filters">
+          Filters ${count ? `<span class="filter-count">${count}</span>` : ''}
+        </button>
+        <select id="sortSel" aria-label="Sort results">
+          <option value="newest"     ${f.sort==='newest'?'selected':''}>Newest first</option>
+          <option value="price-asc"  ${f.sort==='price-asc'?'selected':''}>Price: low → high</option>
+          <option value="price-desc" ${f.sort==='price-desc'?'selected':''}>Price: high → low</option>
+          <option value="size-desc"  ${f.sort==='size-desc'?'selected':''}>Largest first</option>
+        </select>
+        <div class="spacer"></div>
+        <div class="seg dark" style="width:112px">
+          <button data-act="view" data-v="list" class="${state.view==='list'?'on':''}">List</button>
+          <button data-act="view" data-v="map"  class="${state.view==='map'?'on':''}">Map</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div id="results">${resultsHTML(results)}</div>
+  </div>
+
+  ${filterSheetHTML()}`;
+}
+
+function resultsHTML(results) {
+  if (!results.length) {
+    return `<div class="empty">
+      ${icon('search')}
+      <b>No properties match your filters</b>
+      <p>Try widening your price range or removing a filter. New listings are added daily.</p>
+      <button class="btn btn-ghost btn-sm" style="margin-top:14px" data-act="clear-filters">Clear all filters</button>
+    </div>`;
+  }
+  if (state.view === 'map') return mapHTML(results);
+  return `
+    <div class="result-count"><b>${results.length}</b> propert${results.length === 1 ? 'y' : 'ies'} found</div>
+    <div class="grid">${results.map(cardHTML).join('')}</div>
+    <div style="padding:22px 0 10px">
+      <div class="warn">${icon('alert')}<div><b>Fraud warning</b>Never send money before viewing a property. Always check the title deed and meet the owner or a licensed agent in person.</div></div>
+    </div>`;
+}
+
+/* Rough Zambia outline for the map placeholder */
+function toXY(lng, lat) {
+  return [((lng - 22) / 12) * 100, ((-8 - lat) / 10) * 100];
+}
+function zambiaPath() {
+  const pts = [[22.0,-13.0],[25.5,-11.2],[29.0,-8.5],[31.5,-8.6],[33.0,-9.7],[33.7,-12.0],
+               [33.0,-14.0],[32.0,-16.0],[30.4,-15.6],[30.0,-14.5],[29.7,-13.5],[28.5,-12.3],
+               [27.0,-12.0],[25.5,-13.0],[24.0,-13.0],[22.0,-13.0]];
+  return pts.map((p, i) => {
+    const [x, y] = toXY(p[0], p[1]);
+    return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+  }).join(' ') + ' Z';
+}
+
+function mapHTML(results) {
+  return `
+  <div class="result-count"><b>${results.length}</b> properties shown on map · tap a pin to open</div>
+  <div class="map-canvas">
+    <svg class="zambia" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <defs>
+        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M10 0H0V10" fill="none" stroke="#c2d6c9" stroke-width=".3"/>
+        </pattern>
+      </defs>
+      <rect width="100" height="100" fill="url(#grid)"/>
+      <path d="${zambiaPath()}" fill="#cfe3d6" stroke="#8fbfa3" stroke-width=".6"/>
+    </svg>
+    ${results.map(l => {
+      const [x, y] = toXY(l.lng, l.lat);
+      return `<a class="pin ${l.featured ? 'feat' : ''}" href="#/property/${encodeURIComponent(l.ref)}"
+                 style="left:${x}%;top:${y}%">${priceText(l, state.currency).replace(priceSuffix(l), '')}</a>`;
+    }).join('')}
+    <div style="position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.9);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--muted);font-weight:600">
+      Map preview — connect a tiles provider in production
+    </div>
+  </div>`;
+}
+
+function filterSheetHTML() {
+  const f = state.filters;
+  const cur = state.currency;
+  const sym = cur === 'ZMW' ? 'K' : '$';
+  const minVal = f.minZ != null ? Math.round(fromZMW(f.minZ, cur)) : '';
+  const maxVal = f.maxZ != null ? Math.round(fromZMW(f.maxZ, cur)) : '';
+
+  return `
+  <div class="sheet" id="filterSheet">
+    <div class="sheet-bg" data-act="close-filters"></div>
+    <div class="sheet-panel">
+      <div class="sheet-hd">
+        <h3>Filters</h3>
+        <button class="btn btn-ghost btn-sm" data-act="clear-filters">Reset</button>
+      </div>
+      <div class="sheet-body">
+
+        <div class="fgroup">
+          <label>Purpose</label>
+          <div class="chips" data-group="purpose">
+            ${[['','Any'],['sale','For sale'],['rent','To let'],['short','Short stay']].map(([v, n]) =>
+              `<button class="chip ${f.purpose===v?'on':''}" data-act="f-chip" data-group="purpose" data-val="${v}">${n}</button>`).join('')}
+          </div>
+        </div>
+
+        <div class="fgroup">
+          <label>Property type</label>
+          <div class="chips" data-group="type">
+            ${[['','Any'],['house','House'],['apartment','Apartment'],['townhouse','Townhouse'],
+               ['commercial','Commercial'],['industrial','Industrial'],['farm','Farm'],['land','Vacant land']]
+              .map(([v, n]) => `<button class="chip ${f.type===v?'on':''}" data-act="f-chip" data-group="type" data-val="${v}">${n}</button>`).join('')}
+          </div>
+        </div>
+
+        <div class="fgroup">
+          <label>Location</label>
+          <div class="frow" style="margin-bottom:9px">
+            <select class="select" data-act="f-select" data-group="province">
+              <option value="">All provinces</option>
+              ${PROVINCES.map(p => `<option ${f.province===p?'selected':''}>${p}</option>`).join('')}
+            </select>
+            <select class="select" data-act="f-select" data-group="city">
+              <option value="">All cities</option>
+              ${(CITIES[f.province] || Object.values(CITIES).flat()).map(c =>
+                `<option ${f.city===c?'selected':''}>${c}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+
+        <div class="fgroup">
+          <label>Price range (${cur})</label>
+          <div class="frow">
+            <input class="input" type="number" inputmode="numeric" placeholder="${sym} min" id="fMin" value="${minVal}">
+            <input class="input" type="number" inputmode="numeric" placeholder="${sym} max" id="fMax" value="${maxVal}">
+          </div>
+          <div class="hint">Prices shown in ${cur}. Toggle currency at the top to switch to ${cur === 'ZMW' ? 'USD' : 'ZMW'}.</div>
+        </div>
+
+        <div class="fgroup">
+          <label>Bedrooms</label>
+          <div class="chips" data-group="beds">
+            ${[0,1,2,3,4].map(n =>
+              `<button class="chip ${f.beds===n?'on':''}" data-act="f-chip" data-group="beds" data-val="${n}">${n === 0 ? 'Any' : n + '+'}</button>`).join('')}
+          </div>
+        </div>
+
+        <div class="fgroup">
+          <label>Bathrooms</label>
+          <div class="chips" data-group="baths">
+            ${[0,1,2,3].map(n =>
+              `<button class="chip ${f.baths===n?'on':''}" data-act="f-chip" data-group="baths" data-val="${n}">${n === 0 ? 'Any' : n + '+'}</button>`).join('')}
+          </div>
+        </div>
+
+        <div class="fgroup">
+          <label>Minimum plot size</label>
+          <select class="select" data-act="f-select" data-group="minPlot">
+            <option value="0">Any size</option>
+            ${[200,400,600,800,1000,2000,5000,10000].map(n =>
+              `<option value="${n}" ${f.minPlot===n?'selected':''}>${n.toLocaleString('en-US')} m² and above</option>`).join('')}
+          </select>
+        </div>
+
+        <div class="fgroup">
+          <label>Power supply</label>
+          <div class="chips" data-group="power">
+            ${['ZESCO','Solar','Generator','Inverter'].map(p =>
+              `<button class="chip ${f.power.includes(p)?'on':''}" data-act="f-chip" data-group="power" data-val="${p}">${p}</button>`).join('')}
+          </div>
+        </div>
+
+        <div class="fgroup">
+          <label>Water supply</label>
+          <div class="chips" data-group="water">
+            ${['Council','Borehole'].map(w =>
+              `<button class="chip ${f.water.includes(w)?'on':''}" data-act="f-chip" data-group="water" data-val="${w}">${w}</button>`).join('')}
+          </div>
+        </div>
+
+        <div class="fgroup" style="margin-bottom:0">
+          <label>Amenities</label>
+          <div class="chips" style="flex-wrap:wrap;overflow:visible" data-group="amenities">
+            ${AMENITY_LIST.map(a =>
+              `<button class="chip ${f.amenities.includes(a)?'on':''}" data-act="f-chip" data-group="amenities" data-val="${a}">${a}</button>`).join('')}
+          </div>
+        </div>
+
+      </div>
+      <div class="sheet-ft">
+        <button class="btn btn-outline" data-act="clear-filters" style="flex:0 0 auto">Reset</button>
+        <button class="btn btn-primary btn-block" data-act="close-filters">Show results</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function bindSearch() {
+  const q = $('#searchQ');
+  let t;
+  q.addEventListener('input', () => {
+    state.filters.q = q.value;
+    clearTimeout(t);
+    t = setTimeout(refreshResults, 220);
+  });
+  $('#sortSel').addEventListener('change', e => {
+    state.filters.sort = e.target.value;
+    refreshResults();
+  });
+
+  const minEl = $('#fMin'), maxEl = $('#fMax');
+  const readPrices = () => {
+    const cur = state.currency;
+    const mi = parseFloat(minEl?.value), ma = parseFloat(maxEl?.value);
+    state.filters.minZ = isFinite(mi) && mi > 0 ? toZMW(mi, cur) : null;
+    state.filters.maxZ = isFinite(ma) && ma > 0 ? toZMW(ma, cur) : null;
+    refreshResults();
+  };
+  if (minEl) minEl.addEventListener('change', readPrices);
+  if (maxEl) maxEl.addEventListener('change', readPrices);
+
+  $$('[data-act="f-select"]').forEach(sel => {
+    sel.addEventListener('change', () => {
+      const g = sel.dataset.group;
+      state.filters[g] = g === 'minPlot' ? Number(sel.value) : sel.value;
+      if (g === 'province') state.filters.city = '';
+      refreshResults();
+      // Rebuild the sheet to reflect dependent city list
+      const sheet = $('#filterSheet');
+      if (sheet) {
+        const wasOpen = sheet.classList.contains('open');
+        sheet.outerHTML = filterSheetHTML();
+        bindSheet();
+        if (wasOpen) $('#filterSheet').classList.add('open');
+      }
+    });
+  });
+}
+
+function bindSheet() {
+  // chip toggles are handled by the global click delegate
+}
+
+function refreshResults() {
+  const r = $('#results');
+  if (r) r.innerHTML = resultsHTML(applyFilters(LISTINGS));
+  const btn = $('[data-act="open-filters"]');
+  if (btn) {
+    const c = activeFilterCount();
+    btn.innerHTML = `Filters ${c ? `<span class="filter-count">${c}</span>` : ''}`;
+  }
+}
+
+/* ============================================================
+   8. LISTING DETAIL VIEW
+   ============================================================ */
+function detailView(l) {
+  const a = AGENTS[l.agent];
+  const isFav = state.favourites.has(l.id);
+  const shareUrl = location.origin + location.pathname + '#/property/' + encodeURIComponent(l.ref);
+  const shareText = `${l.title} — ${priceExact(l, l.currency)} | Nyumba Zambia`;
+
+  const kvCells = [];
+  if (l.beds) kvCells.push(['Bedrooms', l.beds]);
+  if (l.baths) kvCells.push(['Bathrooms', l.baths]);
+  if (l.plot) kvCells.push(['Plot size', `${l.plot.toLocaleString('en-US')} ${l.plotUnit}`]);
+  if (l.floor) kvCells.push(['Floor area', `${l.floor} m²`]);
+
+  const similar = LISTINGS
+    .filter(x => x.id !== l.id && (x.province === l.province || x.type === l.type))
+    .slice(0, 3);
+
+  return `
+  <div class="gallery">
+    <div class="g-back" data-act="back">${icon('arrow')}</div>
+    <div class="g-track" id="gTrack">
+      ${l.photos.map((p, i) => `
+        <div class="g-slide" data-act="lightbox" data-i="${i}">
+          <img src="${imgUrl(p, i === 0 ? 900 : 640)}" alt="${esc(l.title)} photo ${i + 1}"
+               ${i > 0 ? 'loading="lazy"' : ''} decoding="async"
+               onerror="this.onerror=null;this.src='${FALLBACK}'">
+        </div>`).join('')}
+    </div>
+    <div class="g-count" id="gCount">1 / ${l.photos.length}</div>
+  </div>
+
+  <div class="detail-head">
+    <div class="wrap" style="padding:0">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div style="flex:1;min-width:0">
+          <div class="detail-price">${priceExact(l, state.currency)}<span style="font-size:13px;font-weight:600;color:var(--muted)">${priceSuffix(l)}</span></div>
+          <div class="detail-price-alt">${altPrice(l, state.currency)}</div>
+        </div>
+        <button class="icon-btn ${isFav ? 'on' : ''}" data-act="fav" data-id="${l.id}" aria-label="Save">
+          <svg viewBox="0 0 24 24" fill="${isFav ? '#e0245e' : 'none'}" stroke="${isFav ? '#e0245e' : '#3d4c45'}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M12 20s-7-4.4-7-9.3A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.7C19 15.6 12 20 12 20Z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="detail-title">${esc(l.title)}</div>
+      <div class="detail-loc">${icon('pin')} ${esc(l.suburb)}, ${esc(l.city)} · ${esc(l.province)} Province</div>
+      <div class="detail-badges">
+        <span class="badge" style="background:#0e1a14">${purposeLabel(l.purpose)}${l.purpose === 'rent' ? (l.furnished ? ' · Furnished' : ' · Unfurnished') : ''}</span>
+        <span class="badge" style="background:#3d4c45">${typeLabel(l.type)}</span>
+        ${(l.badges || []).includes('Exclusive') ? badgeHTML('exclusive') : ''}
+        ${l.daysAgo <= 7 ? badgeHTML('new') : ''}
+      </div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:9px">
+        Ref ${l.ref} · Listed ${timeAgo(l.daysAgo)} · ${l.views.toLocaleString('en-US')} views
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap" style="padding-top:14px">
+
+    ${kvCells.length ? `<div class="kv" style="margin-bottom:13px">
+      ${kvCells.map(([k, v]) => `<div class="kv-cell"><span>${k}</span><b>${v}</b></div>`).join('')}
+    </div>` : ''}
+
+    <div class="panel">
+      <h3>About this property</h3>
+      <p>${esc(l.desc)}</p>
+    </div>
+
+    <div class="panel">
+      <h3>Features & amenities</h3>
+      <div class="amenities">
+        ${(l.amenities || []).map(x => `<span class="amenity">${icon('check')}${esc(x)}</span>`).join('')}
+      </div>
+      <div class="divider"></div>
+      <div class="spec-row"><span>Power supply</span><b>${(l.power || []).join(', ') || '—'}</b></div>
+      <div class="spec-row"><span>Water supply</span><b>${(l.water || []).join(', ') || '—'}</b></div>
+      <div class="spec-row"><span>Security estate / gated</span><b>${l.gated ? 'Yes' : 'No'}</b></div>
+      <div class="spec-row"><span>Title type</span><b>${esc(l.titleType || '—')}</b></div>
+      ${l.video ? `<div class="spec-row"><span>Virtual tour</span><b><a href="${esc(l.video)}" target="_blank" rel="noopener" style="color:var(--green)">Watch video →</a></b></div>` : ''}
+    </div>
+
+    <div class="panel">
+      <h3>Location</h3>
+      <div class="map-box">
+        <div class="pin-big"></div>
+        <div class="map-label">${esc(l.suburb)}, ${esc(l.city)} · ${l.lat.toFixed(4)}, ${l.lng.toFixed(4)}</div>
+      </div>
+      <a class="btn btn-outline btn-block btn-sm" style="margin-top:10px"
+         href="https://www.google.com/maps?q=${l.lat},${l.lng}" target="_blank" rel="noopener">
+        Open in Google Maps
+      </a>
+      <div style="margin-top:13px">
+        <div style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Nearby places</div>
+        <div class="amenities">
+          ${(l.nearby || []).map(n => `<span class="amenity">${icon('pin')}${esc(n)}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>${a.verified ? 'Verified agent' : 'Listed by owner'}</h3>
+      <div class="agent-card">
+        <div class="avatar">${a.name.split(' ').map(w => w[0]).join('').slice(0, 2)}</div>
+        <div class="info">
+          <div class="name">
+            ${esc(a.name)}
+            ${a.verified ? `<span class="verified-tick">${icon('check')} Verified</span>` : ''}
+          </div>
+          <div class="agency">${esc(a.agency)}${a.rating ? ` · ★ ${a.rating}` : ''}</div>
+          ${a.license ? `<div class="license">Licence: ${esc(a.license)}</div>` : ''}
+          <div style="font-size:11.5px;color:var(--muted);margin-top:5px">Covers ${a.areas.join(', ')}</div>
+        </div>
+      </div>
+
+      <div class="contact-bar">
+        <a class="btn btn-call" href="tel:${a.phone.replace(/\s/g, '')}">${icon('phone')} Call</a>
+        <a class="btn btn-wa" href="https://wa.me/${a.wa}?text=${encodeURIComponent('Hi, I am interested in ' + l.title + ' (Ref ' + l.ref + ') on Nyumba.')}" target="_blank" rel="noopener">WhatsApp</a>
+        <button class="btn btn-primary full" data-act="enquiry" data-id="${l.id}">Contact agent</button>
+        <button class="btn btn-outline full" data-act="viewing" data-id="${l.id}">📅 Schedule a viewing</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Share this property</h3>
+      <div class="share-row">
+        <a class="btn btn-wa" href="https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn btn-outline" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" rel="noopener">Facebook</a>
+        <button class="btn btn-outline" data-act="copy" data-url="${esc(shareUrl)}">Copy link</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="warn">${icon('alert')}
+        <div><b>Protect yourself from fraud</b>
+          Never pay a deposit before viewing the property. Verify the title deed at the Ministry of Lands, and always confirm the agent's ZIEA or Estate Agents Registration Board licence number.</div>
+      </div>
+      <button class="btn btn-outline btn-block btn-sm" style="margin-top:11px" data-act="report" data-id="${l.id}">🚩 Report this listing</button>
+    </div>
+
+    <section class="section" style="padding-top:6px">
+      <div class="section-hd"><div><h2>Similar properties</h2></div><a href="#/search">See all →</a></div>
+      <div class="grid">${similar.map(cardHTML).join('')}</div>
+    </section>
+
+    <section class="section" style="padding-top:0;padding-bottom:34px">
+      <div class="panel" style="text-align:center">
+        <h3 style="margin-bottom:6px">Thinking of selling or letting?</h3>
+        <p style="font-size:13px;color:var(--muted);white-space:normal;margin-bottom:13px">Request a free, no-obligation valuation from a local agent.</p>
+        <button class="btn btn-primary btn-block" data-act="valuation">Request a free valuation</button>
+      </div>
+    </section>
+  </div>`;
+}
+
+function bindDetail(l) {
+  const track = $('#gTrack');
+  const counter = $('#gCount');
+  if (track && counter) {
+    track.addEventListener('scroll', () => {
+      const i = Math.round(track.scrollLeft / track.clientWidth);
+      counter.textContent = `${Math.min(i + 1, l.photos.length)} / ${l.photos.length}`;
+    }, { passive: true });
+  }
+}
+
+/* ============================================================
+   9. POST A PROPERTY FLOW
+   ============================================================ */
+const POST_STEPS = ['Purpose', 'Location', 'Details', 'Features', 'Photos', 'Review'];
+
+function emptyDraft() {
+  return {
+    purpose:'sale', type:'', province:'', city:'', suburb:'',
+    title:'', desc:'', price:'', currency:'ZMW',
+    beds:'', baths:'', plot:'', plotUnit:'m²', floor:'',
+    power:[], water:[], gated:false, titleType:'', amenities:[],
+    photos:[], video:''
+  };
+}
+
+function postView() {
+  if (!state.user) return signInView();
+  if (!state.draft) state.draft = emptyDraft();
+  const d = state.draft;
+  const step = state.postStep;
+
+  return `
+  <div class="stepper">
+    <div class="wrap">
+      <div class="steps">
+        ${POST_STEPS.map((_, i) => `<div class="step-dot ${i + 1 < step ? 'done' : i + 1 === step ? 'current' : ''}"></div>`).join('')}
+      </div>
+      <div class="step-label">
+        <span>Step <b>${step}</b> of ${POST_STEPS.length} — ${POST_STEPS[step - 1]}</span>
+        <button data-act="save-draft" style="color:var(--green);font-weight:700;font-size:12px">Save draft</button>
+      </div>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:18px">
+    <div id="stepBody">${stepBodyHTML(step, d)}</div>
+    <div style="display:flex;gap:9px;margin:20px 0 34px">
+      ${step > 1 ? `<button class="btn btn-outline" data-act="prev-step" style="flex:0 0 auto">← Back</button>` : ''}
+      <button class="btn btn-primary btn-block" data-act="next-step" id="nextBtn">
+        ${step === POST_STEPS.length ? 'Publish listing' : 'Continue →'}
+      </button>
+    </div>
+  </div>`;
+}
+
+function signInView() {
+  return `
+  <div class="wrap" style="padding-top:36px;max-width:440px">
+    <div style="text-align:center;margin-bottom:24px">
+      <div class="logo-mark" style="width:52px;height:52px;border-radius:15px;font-size:22px;margin:0 auto 14px">N</div>
+      <h2 style="font-size:21px;font-weight:800;letter-spacing:-.02em">Post your property</h2>
+      <p style="font-size:13.5px;color:var(--muted);margin-top:6px">Sign in with your phone number to create and manage listings.</p>
+    </div>
+    <div class="panel">
+      <div class="field">
+        <label>Phone number</label>
+        <div class="input-group">
+          <select class="select" style="width:96px"><option>+260</option></select>
+          <input class="input" id="signPhone" type="tel" inputmode="numeric" placeholder="97 123 4567">
+        </div>
+        <div class="hint">We'll send a 6-digit code by SMS. Standard rates apply.</div>
+      </div>
+      <button class="btn btn-primary btn-block" data-act="send-otp">Send code</button>
+      <div class="divider"></div>
+      <button class="btn btn-outline btn-block" data-act="demo-login">Continue as demo user</button>
+      <p style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.5">
+        By continuing you agree to our Terms of Use and confirm you have the right to list this property.
+      </p>
+    </div>
+  </div>`;
+}
+
+function stepBodyHTML(step, d) {
+  if (step === 1) {
+    return `
+    <h2 style="font-size:18px;font-weight:800;letter-spacing:-.02em;margin-bottom:5px">What are you listing?</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Choose the purpose and property type.</p>
+
+    <div class="field">
+      <label>Purpose</label>
+      <div class="chips" data-group="purpose">
+        ${[['sale','For sale'],['rent','To let'],['short','Short stay']].map(([v, n]) =>
+          `<button class="chip ${d.purpose===v?'on':''}" data-act="d-chip" data-group="purpose" data-val="${v}">${n}</button>`).join('')}
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Property type</label>
+      <div class="type-grid">
+        ${[['house','House','home'],['apartment','Apartment','apt'],['townhouse','Townhouse','building'],
+           ['commercial','Commercial','commercial'],['industrial','Industrial','industrial'],
+           ['farm','Farm','farm'],['land','Vacant land','land']].map(([v, n, ic]) =>
+          `<button class="type-opt ${d.type===v?'on':''}" data-act="d-type" data-val="${v}">
+            ${icon(ic)}<b>${n}</b>
+          </button>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  if (step === 2) {
+    return `
+    <h2 style="font-size:18px;font-weight:800;letter-spacing:-.02em;margin-bottom:5px">Where is it?</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Buyers search by province, city and suburb.</p>
+
+    <div class="field">
+      <label>Province</label>
+      <select class="select" data-act="d-select" data-group="province">
+        <option value="">Select province</option>
+        ${PROVINCES.map(p => `<option ${d.province===p?'selected':''}>${p}</option>`).join('')}
+      </select>
+    </div>
+    <div class="field">
+      <label>City / town</label>
+      <select class="select" data-act="d-select" data-group="city">
+        <option value="">Select city</option>
+        ${(CITIES[d.province] || Object.values(CITIES).flat()).map(c =>
+          `<option ${d.city===c?'selected':''}>${c}</option>`).join('')}
+      </select>
+    </div>
+    <div class="field">
+      <label>Suburb / area</label>
+      <input class="input" data-act="d-input" data-group="suburb" placeholder="e.g. Kabulonga" value="${esc(d.suburb)}">
+      <div class="hint">Be specific — listings with a clear suburb get up to 3× more views.</div>
+    </div>`;
+  }
+
+  if (step === 3) {
+    return `
+    <h2 style="font-size:18px;font-weight:800;letter-spacing:-.02em;margin-bottom:5px">Property details</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Prices can be entered in ZMW or USD.</p>
+
+    <div class="field">
+      <label>Listing title</label>
+      <input class="input" data-act="d-input" data-group="title" maxlength="80"
+             placeholder="e.g. 3 Bedroom House in Kabulonga"
+             value="${esc(d.title)}">
+      <div class="hint">Include bedrooms and suburb. ${d.title.length}/80 characters.</div>
+    </div>
+
+    <div class="field">
+      <label>Price</label>
+      <div class="input-group">
+        <input class="input" type="number" inputmode="numeric" data-act="d-input" data-group="price"
+               placeholder="0" value="${esc(d.price)}">
+        <select class="select" data-act="d-select" data-group="currency" style="width:96px">
+          <option ${d.currency==='ZMW'?'selected':''}>ZMW</option>
+          <option ${d.currency==='USD'?'selected':''}>USD</option>
+        </select>
+      </div>
+      <div class="hint">${d.purpose === 'rent' ? 'Monthly rent' : d.purpose === 'short' ? 'Per night' : 'Asking price'} in ${d.currency}.</div>
+    </div>
+
+    <div class="frow" style="margin-bottom:15px">
+      <div class="field" style="margin:0">
+        <label>Bedrooms</label>
+        <input class="input" type="number" inputmode="numeric" data-act="d-input" data-group="beds"
+               placeholder="0" value="${esc(d.beds)}">
+      </div>
+      <div class="field" style="margin:0">
+        <label>Bathrooms</label>
+        <input class="input" type="number" inputmode="numeric" data-act="d-input" data-group="baths"
+               placeholder="0" value="${esc(d.baths)}">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Plot size</label>
+      <div class="input-group">
+        <input class="input" type="number" inputmode="decimal" data-act="d-input" data-group="plot"
+               placeholder="0" value="${esc(d.plot)}">
+        <select class="select" data-act="d-select" data-group="plotUnit" style="width:96px">
+          <option ${d.plotUnit==='m²'?'selected':''}>m²</option>
+          <option ${d.plotUnit==='ha'?'selected':''}>ha</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Floor area (m²) <span style="font-weight:500;color:var(--muted)">— optional</span></label>
+      <input class="input" type="number" inputmode="numeric" data-act="d-input" data-group="floor"
+             placeholder="e.g. 220" value="${esc(d.floor)}">
+    </div>
+
+    <div class="field">
+      <label>Description</label>
+      <textarea class="textarea" data-act="d-input" data-group="desc" maxlength="2000"
+        placeholder="Describe the property, its condition, what's included and what makes it special…">${esc(d.desc)}</textarea>
+      <div class="hint">${d.desc.length}/2000 characters. Mention the title deed status and whether the property is occupied.</div>
+    </div>`;
+  }
+
+  if (step === 4) {
+    return `
+    <h2 style="font-size:18px;font-weight:800;letter-spacing:-.02em;margin-bottom:5px">Features & utilities</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">These are the fields Zambian buyers filter by most.</p>
+
+    <div class="field">
+      <label>Power supply</label>
+      <div class="chips" style="flex-wrap:wrap;overflow:visible" data-group="power">
+        ${['ZESCO','Solar','Generator','Inverter'].map(p =>
+          `<button class="chip ${d.power.includes(p)?'on':''}" data-act="d-chip" data-group="power" data-val="${p}">${p}</button>`).join('')}
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Water supply</label>
+      <div class="chips" style="flex-wrap:wrap;overflow:visible" data-group="water">
+        ${['Council','Borehole'].map(w =>
+          `<button class="chip ${d.water.includes(w)?'on':''}" data-act="d-chip" data-group="water" data-val="${w}">${w}</button>`).join('')}
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Security estate or gated compound?</label>
+      <div class="chips" data-group="gated">
+        <button class="chip ${d.gated?'on':''}" data-act="d-gated" data-val="1">Yes, gated</button>
+        <button class="chip ${!d.gated?'on':''}" data-act="d-gated" data-val="0">No</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Title type</label>
+      <select class="select" data-act="d-select" data-group="titleType">
+        <option value="">Select title type</option>
+        ${['Title Deed','Leasehold','Customary','Certificate of Title','Not yet titled']
+          .map(t => `<option ${d.titleType===t?'selected':''}>${t}</option>`).join('')}
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Amenities</label>
+      <div class="chips" style="flex-wrap:wrap;overflow:visible" data-group="amenities">
+        ${AMENITY_LIST.map(a =>
+          `<button class="chip ${d.amenities.includes(a)?'on':''}" data-act="d-chip" data-group="amenities" data-val="${a}">${a}</button>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  if (step === 5) {
+    return `
+    <h2 style="font-size:18px;font-weight:800;letter-spacing:-.02em;margin-bottom:5px">Photos & media</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Up to 15 photos. Drag to reorder — the first is your cover photo.</p>
+
+    <div class="photo-grid" id="photoGrid">
+      ${d.photos.map((p, i) => `
+        <div class="photo-slot" draggable="true" data-idx="${i}">
+          <img src="${p}" alt="Photo ${i + 1}">
+          <button class="rm" data-act="rm-photo" data-idx="${i}">×</button>
+          ${i === 0 ? '<div class="cover-tag">COVER</div>' : ''}
+        </div>`).join('')}
+      ${d.photos.length < 15 ? `
+        <label class="photo-add" for="photoInput">
+          <div>
+            <div style="font-size:22px;line-height:1">＋</div>
+            <div style="margin-top:3px">Add photo</div>
+          </div>
+        </label>` : ''}
+    </div>
+    <input type="file" id="photoInput" accept="image/*" multiple hidden>
+
+    <div class="field" style="margin-top:18px">
+      <label>Video or virtual tour link <span style="font-weight:500;color:var(--muted)">— optional</span></label>
+      <input class="input" data-act="d-input" data-group="video" placeholder="https://youtube.com/watch?v=…" value="${esc(d.video)}">
+      <div class="hint">YouTube, Vimeo or a Matterport tour link.</div>
+    </div>
+
+    <div class="warn" style="margin-top:6px">
+      ${icon('camera')}
+      <div><b>Photo tips</b>Shoot in daylight, include the exterior, lounge, kitchen and garden. Photos are automatically compressed for fast loading on slow connections.</div>
+    </div>`;
+  }
+
+  // Step 6 — review
+  const preview = {
+    ...emptyDraft(), ...d,
+    price: Number(d.price) || 0,
+    beds: Number(d.beds) || 0,
+    baths: Number(d.baths) || 0,
+    plot: Number(d.plot) || 0,
+    floor: Number(d.floor) || 0,
+    photos: d.photos.length ? d.photos : [PH.h1],
+    badges: [], agent: 'a5', daysAgo: 0, views: 0, enquiries: 0,
+    title: d.title || 'Untitled listing',
+    suburb: d.suburb || '—', city: d.city || '—', province: d.province || '—',
+    featured: false, ref: 'NEW-DRAFT'
+  };
+
+  return `
+  <h2 style="font-size:18px;font-weight:800;letter-spacing:-.02em;margin-bottom:5px">Review & publish</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Check your listing before submitting it for approval.</p>
+
+  <div class="grid" style="margin-bottom:18px">
+    ${cardHTML(preview)}
+  </div>
+
+  <div class="panel">
+    <h3>Summary</h3>
+    <div class="spec-row"><span>Purpose</span><b>${purposeLabel(d.purpose)}</b></div>
+    <div class="spec-row"><span>Type</span><b>${d.type ? typeLabel(d.type) : '—'}</b></div>
+    <div class="spec-row"><span>Location</span><b>${esc(d.suburb || '—')}, ${esc(d.city || '—')}</b></div>
+    <div class="spec-row"><span>Price</span><b>${d.price ? (d.currency === 'ZMW' ? 'K' : '$') + Number(d.price).toLocaleString('en-US') : '—'}</b></div>
+    <div class="spec-row"><span>Power / water</span><b>${[...d.power, ...d.water].join(', ') || '—'}</b></div>
+    <div class="spec-row"><span>Title</span><b>${esc(d.titleType || '—')}</b></div>
+    <div class="spec-row"><span>Photos</span><b>${d.photos.length}</b></div>
+  </div>
+
+  <div class="warn">
+    ${icon('shield')}
+    <div><b>Listings are reviewed before going live</b>
+      Our team checks every listing for accuracy and fraud. Your listing will show as <b style="display:inline">Under review</b> until approved — usually within 24 hours.</div>
+  </div>
+
+  <div class="panel" style="margin-top:13px;background:#f7f8f6">
+    <h3>Boost your listing</h3>
+    <p style="font-size:12.5px;color:var(--muted);white-space:normal;margin-bottom:10px">Optional paid upgrades will be available soon.</p>
+    <div class="spec-row"><span>⭐ Featured on homepage</span><b style="color:var(--muted)">Coming soon</b></div>
+    <div class="spec-row"><span>🔝 Top of search results</span><b style="color:var(--muted)">Coming soon</b></div>
+  </div>`;
+}
+
+function bindPost() {
+  if (!state.user) {
+    // sign-in handlers are global
+    return;
+  }
+  // file input
+  const input = $('#photoInput');
+  if (input) {
+    input.addEventListener('change', e => {
+      const files = Array.from(e.target.files || []).slice(0, 15 - state.draft.photos.length);
+      files.forEach(f => {
+        const url = URL.createObjectURL(f);
+        state.draft.photos.push(url);
+      });
+      saveDraft();
+      rerenderStep();
+    });
+  }
+  // drag to reorder
+  const grid = $('#photoGrid');
+  if (grid) {
+    let dragIdx = null;
+    grid.addEventListener('dragstart', e => {
+      const slot = e.target.closest('.photo-slot');
+      if (!slot) return;
+      dragIdx = Number(slot.dataset.idx);
+      slot.classList.add('dragging');
+    });
+    grid.addEventListener('dragend', e => {
+      const slot = e.target.closest('.photo-slot');
+      if (slot) slot.classList.remove('dragging');
+    });
+    grid.addEventListener('dragover', e => e.preventDefault());
+    grid.addEventListener('drop', e => {
+      e.preventDefault();
+      const slot = e.target.closest('.photo-slot');
+      if (!slot || dragIdx === null) return;
+      const to = Number(slot.dataset.idx);
+      if (to === dragIdx) return;
+      const arr = state.draft.photos;
+      const [moved] = arr.splice(dragIdx, 1);
+      arr.splice(to, 0, moved);
+      dragIdx = null;
+      saveDraft();
+      rerenderStep();
+    });
+  }
+}
+
+function saveDraft() {
+  localStorage.setItem('nz_draft', JSON.stringify(state.draft));
+}
+function rerenderStep() {
+  const body = $('#stepBody');
+  if (body) body.innerHTML = stepBodyHTML(state.postStep, state.draft);
+  bindPost();
+}
+
+function validateStep(step) {
+  const d = state.draft;
+  if (step === 1) {
+    if (!d.purpose) return 'Choose whether the property is for sale, to let or short stay.';
+    if (!d.type) return 'Select a property type.';
+  }
+  if (step === 2) {
+    if (!d.province) return 'Select a province.';
+    if (!d.city) return 'Select a city or town.';
+    if (!d.suburb.trim()) return 'Enter the suburb or area.';
+  }
+  if (step === 3) {
+    if (!d.title.trim() || d.title.trim().length < 10) return 'Enter a listing title of at least 10 characters.';
+    if (!d.price || Number(d.price) <= 0) return 'Enter a valid price.';
+    if (!d.desc.trim() || d.desc.trim().length < 30) return 'Please write a description of at least 30 characters.';
+  }
+  if (step === 4) {
+    if (!d.titleType) return 'Select the title type.';
+  }
+  if (step === 5) {
+    if (d.photos.length < 1) return 'Add at least one photo.';
+  }
+  return null;
+}
+
+/* ============================================================
+   10. SAVED / ACCOUNT / ADVICE / AGENTS
+   ============================================================ */
+function savedView() {
+  const saved = LISTINGS.filter(l => state.favourites.has(l.id));
+  return `
+  <div class="wrap" style="padding-top:22px">
+    <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px">Saved properties</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">
+      ${saved.length ? `${saved.length} propert${saved.length === 1 ? 'y' : 'ies'} you've saved.` : 'Tap the heart on any listing to save it here.'}
+    </p>
+    ${saved.length
+      ? `<div class="grid">${saved.map(cardHTML).join('')}</div>`
+      : `<div class="empty">${icon('heart')}<b>No saved properties yet</b><p>Browse listings and tap the heart icon to save them for later.</p><a href="#/search" class="btn btn-primary btn-sm" style="margin-top:16px">Start searching</a></div>`}
+    <div style="height:30px"></div>
+  </div>`;
+}
+
+function accountView() {
+  if (!state.user) {
+    return `<div class="wrap" style="padding-top:36px;max-width:440px">
+      <div style="text-align:center;margin-bottom:22px">
+        <div class="logo-mark" style="width:52px;height:52px;border-radius:15px;font-size:22px;margin:0 auto 14px">N</div>
+        <h2 style="font-size:20px;font-weight:800">Your account</h2>
+        <p style="font-size:13px;color:var(--muted);margin-top:5px">Sign in to manage listings and enquiries.</p>
+      </div>
+      <div class="panel">
+        <button class="btn btn-primary btn-block" data-act="open-signin">Sign in</button>
+      </div>
+    </div>`;
+  }
+
+  const mine = state.myListings;
+  return `
+  <div class="wrap" style="padding-top:22px">
+    <div class="panel" style="display:flex;gap:13px;align-items:center">
+      <div class="avatar">${esc(state.user.name.slice(0, 2).toUpperCase())}</div>
+      <div style="flex:1">
+        <div style="font-weight:800;font-size:15px">${esc(state.user.name)}</div>
+        <div style="font-size:12.5px;color:var(--muted)">${esc(state.user.phone)}</div>
+      </div>
+      <button class="btn btn-outline btn-sm" data-act="logout">Sign out</button>
+    </div>
+
+    <div class="stat-grid" style="margin-bottom:14px">
+      <div class="stat"><b>${mine.length}</b><span>Listings</span></div>
+      <div class="stat"><b>${mine.reduce((s, l) => s + (l.views || 0), 0)}</b><span>Views</span></div>
+      <div class="stat"><b>${mine.reduce((s, l) => s + (l.enquiries || 0), 0)}</b><span>Enquiries</span></div>
+    </div>
+
+    <div class="section-hd"><div><h2 style="font-size:16px">My listings</h2></div></div>
+    ${mine.length ? mine.map(l => `
+      <div class="panel" style="display:flex;gap:11px;align-items:center">
+        <img src="${l.photos[0] || FALLBACK}" alt="" style="width:64px;height:64px;border-radius:10px;object-fit:cover" onerror="this.src='${FALLBACK}'">
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13.5px;line-height:1.3">${esc(l.title)}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">${esc(l.suburb)}, ${esc(l.city)}</div>
+          <div style="margin-top:6px">
+            <span class="badge" style="background:${l.status === 'Under review' ? '#c8763c' : '#0b6b4f'}">${l.status}</span>
+          </div>
+        </div>
+        <div style="text-align:right;font-size:11px;color:var(--muted)">
+          <div><b style="color:var(--ink);font-size:13px">${l.views || 0}</b> views</div>
+          <div style="margin-top:3px"><b style="color:var(--ink);font-size:13px">${l.enquiries || 0}</b> enquiries</div>
+        </div>
+      </div>`).join('') : `
+      <div class="panel" style="text-align:center;padding:30px 18px">
+        <p style="font-size:13px;color:var(--muted);white-space:normal;margin-bottom:13px">You haven't posted any properties yet.</p>
+        <a href="#/post" class="btn btn-primary btn-sm">Post your first property</a>
+      </div>`}
+
+    <div class="section-hd" style="margin-top:22px"><div><h2 style="font-size:16px">Enquiries inbox</h2></div></div>
+    <div class="panel">
+      ${[
+        ['Mwila Banda', 'Is the Kabulonga house still available? Can I view on Saturday?', '2h ago'],
+        ['Thandiwe Phiri', 'Interested in the Roma apartment — is the rent negotiable?', '1d ago'],
+        ['Joseph Mwansa', 'Please send the floor plan for the Meanwood Valley units.', '3d ago']
+      ].map(([n, m, t]) => `
+        <div style="display:flex;gap:11px;padding:11px 0;border-bottom:1px solid #f0f3f1">
+          <div class="avatar" style="width:38px;height:38px;font-size:13px">${n.split(' ').map(x => x[0]).join('')}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:700;font-size:13px">${n}</div>
+            <div style="font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.4">${m}</div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);flex-shrink:0">${t}</div>
+        </div>`).join('')}
+    </div>
+
+    <div class="panel" style="margin-top:14px">
+      <h3>Saved searches</h3>
+      <div class="spec-row"><span>3+ bed houses in Lusaka under K2M</span><b style="color:var(--green)">View</b></div>
+      <div class="spec-row"><span>Land in Ibex Hill & Silverest</span><b style="color:var(--green)">View</b></div>
+      <div class="spec-row"><span>To let in Kitwe, furnished</span><b style="color:var(--green)">View</b></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:34px">
+      <h3>Agent tools</h3>
+      <div class="spec-row"><span>Verification status</span><b style="color:#c8763c">Not verified</b></div>
+      <div class="spec-row"><span>ZIEA licence number</span><b style="color:var(--muted)">Not provided</b></div>
+      <button class="btn btn-outline btn-block btn-sm" style="margin-top:11px" data-act="verify-agent">Apply for Verified Agent badge</button>
+    </div>
+  </div>`;
+}
+
+function adviceView() {
+  const posts = [
+    ['How to buy property in Zambia', 'A step-by-step guide to searches, title deeds, transfer duty and stamp duty.', 'buying'],
+    ['Renting in Lusaka: what to expect', 'Deposits, lease terms, utility connections and how to avoid scams.', 'renting'],
+    ['Documents you need before you sell', 'Title deed, rates clearance, ID and the consent to transfer.', 'legal'],
+    ['Diaspora investing guide', 'Buying remotely, using a power of attorney and choosing a trustworthy agent.', 'diaspora'],
+    ['Understanding title deeds in Zambia', 'State lease vs. certificate of title vs. customary land.', 'legal'],
+    ['Mortgage & affordability basics', 'How much can you borrow, and what deposit will you need?', 'finance']
+  ];
+  return `
+  <div class="wrap" style="padding-top:22px">
+    <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px">Advice & guides</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Practical guidance for buying, selling and renting in Zambia.</p>
+    <div class="grid two">
+      ${posts.map(([t, s]) => `
+        <a class="panel" href="#/advice">
+          <div style="font-size:10.5px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Guide</div>
+          <div style="font-weight:800;font-size:14.5px;line-height:1.3">${t}</div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:6px;white-space:normal;line-height:1.5">${s}</p>
+        </a>`).join('')}
+    </div>
+    <div style="height:30px"></div>
+  </div>`;
+}
+
+function agentsView() {
+  return `
+  <div class="wrap" style="padding-top:22px">
+    <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px">Estate agents & agencies</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Every verified agent's ZIEA or EARB licence number is shown on their profile.</p>
+    ${Object.values(AGENTS).filter(a => a.verified).map(a => `
+      <div class="panel">
+        <div class="agent-card">
+          <div class="avatar">${a.name.split(' ').map(w => w[0]).join('')}</div>
+          <div class="info">
+            <div class="name">${esc(a.name)} <span class="verified-tick">${icon('check')} Verified</span></div>
+            <div class="agency">${esc(a.agency)}${a.rating ? ` · ★ ${a.rating}` : ''}</div>
+            <div class="license">Licence: ${esc(a.license)}</div>
+            <div style="font-size:12.5px;color:#3d4c45;margin-top:8px;line-height:1.5">${esc(a.bio)}</div>
+            <div class="amenities" style="margin-top:9px">
+              ${a.areas.map(x => `<span class="amenity">${esc(x)}</span>`).join('')}
+            </div>
+            <div style="display:flex;gap:8px;margin-top:11px">
+              <a class="btn btn-primary btn-sm" href="#/search">View listings</a>
+              <a class="btn btn-outline btn-sm" href="tel:${a.phone.replace(/\s/g,'')}">Call</a>
+            </div>
+          </div>
+        </div>
+      </div>`).join('')}
+    <div style="height:30px"></div>
+  </div>`;
+}
+
+function notFoundView() {
+  return `<div class="wrap"><div class="empty">
+    ${icon('search')}<b>Page not found</b><p>The listing or page you're looking for doesn't exist.</p>
+    <a href="#/" class="btn btn-primary btn-sm" style="margin-top:16px">Back to home</a>
+  </div></div>`;
+}
+
+/* ============================================================
+   11. MODALS
+   ============================================================ */
+function enquiryModal(l) {
+  const a = AGENTS[l.agent];
+  openModal(`
+    <h3>Contact ${esc(a.name)}</h3>
+    <p class="sub">${esc(l.title)} · Ref ${l.ref}</p>
+    <div class="field"><label>Your name</label><input class="input" id="enqName" placeholder="Full name" value="${esc(state.user?.name || '')}"></div>
+    <div class="field"><label>Phone number</label><input class="input" id="enqPhone" type="tel" placeholder="+260 97 123 4567" value="${esc(state.user?.phone || '')}"></div>
+    <div class="field"><label>Message</label><textarea class="textarea" id="enqMsg" style="min-height:80px">Hello, I'm interested in ${esc(l.title)} (Ref ${l.ref}). Please contact me to arrange a viewing.</textarea></div>
+    <button class="btn btn-primary btn-block" data-act="send-enquiry" data-id="${l.id}">Send enquiry</button>
+    <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px">Your details are shared only with this agent.</p>
+  `);
+}
+
+function viewingModal(l) {
+  const today = new Date();
+  const min = today.toISOString().slice(0, 10);
+  openModal(`
+    <h3>Schedule a viewing</h3>
+    <p class="sub">${esc(l.title)} · Ref ${l.ref}</p>
+    <div class="field"><label>Preferred date</label><input class="input" type="date" id="viewDate" min="${min}"></div>
+    <div class="field"><label>Preferred time</label>
+      <select class="select" id="viewTime">
+        <option>Morning (08:00 – 11:00)</option>
+        <option>Midday (11:00 – 14:00)</option>
+        <option>Afternoon (14:00 – 17:00)</option>
+        <option>Evening (17:00 – 19:00)</option>
+      </select>
+    </div>
+    <div class="field"><label>Your phone number</label><input class="input" id="viewPhone" type="tel" placeholder="+260 97 123 4567" value="${esc(state.user?.phone || '')}"></div>
+    <button class="btn btn-primary btn-block" data-act="send-viewing" data-id="${l.id}">Request viewing</button>
+  `);
+}
+
+function reportModal(l) {
+  openModal(`
+    <h3>Report this listing</h3>
+    <p class="sub">Ref ${l.ref} — our moderation team reviews every report.</p>
+    <div class="field"><label>Reason</label>
+      <select class="select" id="reportReason">
+        <option>Suspected fraud or scam</option>
+        <option>Property is no longer available</option>
+        <option>Incorrect price or details</option>
+        <option>Duplicate listing</option>
+        <option>Offensive or inappropriate content</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="field"><label>Additional details</label><textarea class="textarea" id="reportText" style="min-height:80px" placeholder="Tell us what's wrong…"></textarea></div>
+    <button class="btn btn-primary btn-block" data-act="send-report">Submit report</button>
+  `);
+}
+
+function valuationModal() {
+  openModal(`
+    <h3>Request a free valuation</h3>
+    <p class="sub">A local agent will contact you within 24 hours with an estimated market value.</p>
+    <div class="field"><label>Property address or suburb</label><input class="input" id="valAddr" placeholder="e.g. Kabulonga, Lusaka"></div>
+    <div class="field"><label>Property type</label>
+      <select class="select" id="valType"><option>House</option><option>Apartment</option><option>Townhouse</option><option>Land</option><option>Commercial</option><option>Farm</option></select>
+    </div>
+    <div class="field"><label>Your phone number</label><input class="input" id="valPhone" type="tel" placeholder="+260 97 123 4567" value="${esc(state.user?.phone || '')}"></div>
+    <button class="btn btn-primary btn-block" data-act="send-valuation">Request valuation</button>
+  `);
+}
+
+function otpModal(phone) {
+  openModal(`
+    <h3>Enter verification code</h3>
+    <p class="sub">We sent a 6-digit code to <b>${esc(phone)}</b>. For this demo, use <b>123456</b>.</p>
+    <div class="field">
+      <label>Verification code</label>
+      <input class="input" id="otpCode" inputmode="numeric" maxlength="6" placeholder="000000"
+             style="text-align:center;font-size:22px;letter-spacing:.4em;font-weight:700">
+    </div>
+    <button class="btn btn-primary btn-block" data-act="verify-otp" data-phone="${esc(phone)}">Verify & continue</button>
+    <button class="btn btn-outline btn-block btn-sm" style="margin-top:9px" data-act="close-modal">Cancel</button>
+  `);
+}
+
+function lightboxModal(l, index) {
+  openModal(`
+    <div style="-webkit-overflow-scrolling:touch">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+        <div style="font-size:13px;font-weight:700">${index + 1} / ${l.photos.length}</div>
+        <button class="btn btn-outline btn-sm" data-act="close-modal">Close</button>
+      </div>
+      <div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;border-radius:12px">
+        ${l.photos.map((p, i) => `
+          <img src="${imgUrl(p, 1000)}" alt="Photo ${i + 1}"
+               style="flex:0 0 100%;scroll-snap-align:center;border-radius:12px;object-fit:cover;max-height:62vh"
+               ${i > 0 ? 'loading="lazy"' : ''} onerror="this.src='${FALLBACK}'">`).join('')}
+      </div>
+    </div>
+  `);
+  // scroll to the tapped image
+  setTimeout(() => {
+    const track = document.querySelector('#modal-root div[style*="scroll-snap-type"]');
+    if (track) track.scrollLeft = index * track.clientWidth;
+  }, 40);
+}
+
+/* ============================================================
+   12. GLOBAL EVENT DELEGATION
+   ============================================================ */
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  const act = el.dataset.act;
+
+  /* --- currency --- */
+  if (act === 'cur') {
+    state.currency = el.dataset.val;
+    localStorage.setItem('nz_cur', state.currency);
+    $$('#curToggle button').forEach(b => b.classList.toggle('on', b.dataset.val === state.currency));
+    route();
+    return;
+  }
+
+  /* --- favourites --- */
+  if (act === 'fav') {
+    e.preventDefault();
+    e.stopPropagation();
+    const id = el.dataset.id;
+    if (state.favourites.has(id)) {
+      state.favourites.delete(id);
+      toast('Removed from saved');
+    } else {
+      state.favourites.add(id);
+      toast('Saved to your properties');
+    }
+    localStorage.setItem('nz_favs', JSON.stringify([...state.favourites]));
+    el.classList.toggle('on');
+    if (el.classList.contains('fav-btn')) {
+      const on = state.favourites.has(id);
+      el.innerHTML = `<svg viewBox="0 0 24 24" fill="${on ? '#e0245e' : 'none'}" stroke="${on ? '#e0245e' : '#3d4c45'}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 20s-7-4.4-7-9.3A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.7C19 15.6 12 20 12 20Z"/></svg>`;
+    } else if (el.classList.contains('icon-btn')) {
+      const on = state.favourites.has(id);
+      el.querySelector('svg').setAttribute('fill', on ? '#e0245e' : 'none');
+      el.querySelector('svg').setAttribute('stroke', on ? '#e0245e' : '#3d4c45');
+    }
+    if (parseHash().path === '/saved') route();
+    return;
+  }
+
+  /* --- filters sheet --- */
+  if (act === 'open-filters') {
+    const s = $('#filterSheet');
+    if (s) s.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    return;
+  }
+  if (act === 'close-filters') {
+    const s = $('#filterSheet');
+    if (s) s.classList.remove('open');
+    document.body.style.overflow = '';
+    return;
+  }
+  if (act === 'clear-filters') {
+    state.filters = defaultFilters();
+    route();
+    toast('Filters cleared');
+    return;
+  }
+  if (act === 'f-chip') {
+    const g = el.dataset.group, v = el.dataset.val;
+    const f = state.filters;
+    if (g === 'purpose' || g === 'type') {
+      f[g] = v;
+      $$(`#filterSheet [data-group="${g}"] .chip`).forEach(c => c.classList.toggle('on', c.dataset.val === v));
+    } else if (g === 'beds' || g === 'baths') {
+      f[g] = Number(v);
+      $$(`#filterSheet [data-group="${g}"] .chip`).forEach(c => c.classList.toggle('on', Number(c.dataset.val) === f[g]));
+    } else {
+      const arr = f[g];
+      const i = arr.indexOf(v);
+      if (i >= 0) arr.splice(i, 1); else arr.push(v);
+      el.classList.toggle('on');
+    }
+    refreshResults();
+    return;
+  }
+  if (act === 'view') {
+    state.view = el.dataset.v;
+    $$('[data-act="view"]').forEach(b => b.classList.toggle('on', b.dataset.v === state.view));
+    refreshResults();
+    return;
+  }
+
+  /* --- detail actions --- */
+  if (act === 'back') { history.length > 1 ? history.back() : navigate('#/'); return; }
+  if (act === 'lightbox') {
+    const l = byRef[decodeURIComponent(parseHash().path.split('/')[2] || '')];
+    if (l) lightboxModal(l, Number(el.dataset.i));
+    return;
+  }
+  if (act === 'copy') {
+    const url = el.dataset.url;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => toast('Link copied to clipboard')).catch(() => toast('Copy failed'));
+    } else {
+      toast('Link copied');
+    }
+    return;
+  }
+  if (act === 'enquiry') { const l = byId[el.dataset.id]; if (l) enquiryModal(l); return; }
+  if (act === 'viewing') { const l = byId[el.dataset.id]; if (l) viewingModal(l); return; }
+  if (act === 'report') { const l = byId[el.dataset.id]; if (l) reportModal(l); return; }
+  if (act === 'valuation') { valuationModal(); return; }
+  if (act === 'send-enquiry') { closeModal(); toast('Enquiry sent — the agent will contact you shortly'); return; }
+  if (act === 'send-viewing') {
+    const dt = $('#viewDate')?.value;
+    if (!dt) { toast('Please choose a date'); return; }
+    closeModal();
+    toast('Viewing request sent for ' + dt);
+    return;
+  }
+  if (act === 'send-report') { closeModal(); toast('Report submitted — thank you, our team will review it'); return; }
+  if (act === 'send-valuation') { closeModal(); toast('Valuation request sent — an agent will be in touch'); return; }
+
+  /* --- modals --- */
+  if (act === 'close-modal') { closeModal(); return; }
+
+  /* --- auth --- */
+  if (act === 'open-signin' || act === 'send-otp') {
+    const phone = ($('#signPhone')?.value || $('#signPhone') || '').trim?.() || '';
+    const val = $('#signPhone') ? $('#signPhone').value.trim() : '';
+    if (act === 'send-otp' && val.length < 7) { toast('Enter a valid phone number'); return; }
+    otpModal('+260 ' + val.replace(/^0/, ''));
+    return;
+  }
+  if (act === 'verify-otp') {
+    const code = $('#otpCode')?.value.trim();
+    if (code !== '123456') { toast('Incorrect code — use 123456 for the demo'); return; }
+    state.user = { name: 'Demo User', phone: el.dataset.phone };
+    localStorage.setItem('nz_user', JSON.stringify(state.user));
+    closeModal();
+    toast('Signed in successfully');
+    route();
+    return;
+  }
+  if (act === 'demo-login') {
+    state.user = { name: 'Demo User', phone: '+260 97 000 0000' };
+    localStorage.setItem('nz_user', JSON.stringify(state.user));
+    toast('Signed in as demo user');
+    route();
+    return;
+  }
+  if (act === 'logout') {
+    state.user = null;
+    localStorage.removeItem('nz_user');
+    toast('Signed out');
+    route();
+    return;
+  }
+  if (act === 'verify-agent') { toast('Verification application started — upload your ZIEA licence to continue'); return; }
+
+  /* --- post flow --- */
+  if (act === 'd-chip') {
+    const g = el.dataset.group, v = el.dataset.val;
+    const d = state.draft;
+    if (['purpose'].includes(g)) {
+      d[g] = v;
+    } else {
+      const arr = d[g];
+      const i = arr.indexOf(v);
+      if (i >= 0) arr.splice(i, 1); else arr.push(v);
+    }
+    el.classList.toggle('on');
+    saveDraft();
+    return;
+  }
+  if (act === 'd-type') {
+    state.draft.type = el.dataset.val;
+    $$('.type-opt').forEach(b => b.classList.toggle('on', b.dataset.val === el.dataset.val));
+    saveDraft();
+    return;
+  }
+  if (act === 'd-gated') {
+    state.draft.gated = el.dataset.val === '1';
+    $$('[data-act="d-gated"]').forEach(b => b.classList.toggle('on', b.dataset.val === el.dataset.val));
+    saveDraft();
+    return;
+  }
+  if (act === 'd-select') {
+    const g = el.dataset.group;
+    state.draft[g] = el.value;
+    if (g === 'province') state.draft.city = '';
+    saveDraft();
+    if (g === 'province' || g === 'currency') rerenderStep();
+    return;
+  }
+  if (act === 'rm-photo') {
+    state.draft.photos.splice(Number(el.dataset.idx), 1);
+    saveDraft();
+    rerenderStep();
+    return;
+  }
+  if (act === 'save-draft') { saveDraft(); toast('Draft saved to this device'); return; }
+  if (act === 'prev-step') {
+    state.postStep = Math.max(1, state.postStep - 1);
+    saveDraft();
+    route();
+    return;
+  }
+  if (act === 'next-step') {
+    const step = state.postStep;
+    const err = validateStep(step);
+    if (err) {
+      toast(err);
+      return;
+    }
+    if (step === POST_STEPS.length) {
+      // publish
+      const d = state.draft;
+      state.myListings.unshift({
+        id: 'mine-' + Date.now(),
+        title: d.title,
+        suburb: d.suburb, city: d.city,
+        photos: d.photos.length ? d.photos : [PH.h1],
+        status: 'Under review',
+        views: 0, enquiries: 0
+      });
+      localStorage.setItem('nz_mine', JSON.stringify(state.myListings));
+      localStorage.removeItem('nz_draft');
+      state.draft = null;
+      state.postStep = 1;
+      openModal(`
+        <div style="text-align:center;padding:8px 0 4px">
+          <div style="width:60px;height:60px;border-radius:50%;background:var(--green-50);display:grid;place-items:center;margin:0 auto 15px">
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#0b6b4f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"/></svg>
+          </div>
+          <h3 style="margin-bottom:7px">Listing submitted</h3>
+          <p class="sub">Your property is now <b>Under review</b>. Our team usually approves listings within 24 hours, and we'll notify you by SMS and email.</p>
+          <a href="#/account" class="btn btn-primary btn-block" data-act="close-modal">Go to my dashboard</a>
+        </div>
+      `);
+      return;
+    }
+    state.postStep = step + 1;
+    saveDraft();
+    route();
+    return;
+  }
+});
+
+/* live input capture for the post form (no re-render) */
+document.addEventListener('input', e => {
+  const el = e.target.closest('[data-act="d-input"]');
+  if (el && state.draft) {
+    state.draft[el.dataset.group] = el.value;
+    saveDraft();
+  }
+});
+
+/* ============================================================
+   13. BOOT
+   ============================================================ */
+if (!location.hash) location.hash = '#/';
+route();
+</script>
+</body>
+</html>
